@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "cmos.h"
 
 void _start(void)
 {
@@ -11,6 +12,7 @@ void _start(void)
 	char s5[10] = "a -> about";
 	char s6[26] = "Programiert von glowman434";
 	char s7[49] = "Vielen dank an das tolle tutorial von lowlevel.eu";
+	char s8[9] = "t -> time";
 	
 	char buff;
 	char last;
@@ -48,6 +50,10 @@ void _start(void)
         				asm("int $0x30" : : "a" (0), "b" (s5[i])); // print help text 3
     				}
 					asm("int $0x30" : : "a" (0), "b" (10)); // return
+					for (int i = 0; i < 9; i++) {
+        				asm("int $0x30" : : "a" (0), "b" (s8[i])); // print help text 4
+    				}
+					asm("int $0x30" : : "a" (0), "b" (10)); // return
 					break;
 				case 'a':
 					for (int i = 0; i < 26; i++) {
@@ -58,6 +64,10 @@ void _start(void)
         				asm("int $0x30" : : "a" (0), "b" (s7[i])); // print about text 2
     				}
 					asm("int $0x30" : : "a" (0), "b" (10)); // return
+					break;
+				case 't':
+					print_time();
+					break;
 			}
 			last = buff;
 			for (int i = 0; i < 2; i++) {

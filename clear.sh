@@ -9,3 +9,5 @@ rm terminal/*.bin
 rm terminal/*.o
 rm test/*.bin
 rm test/*.o
+rm cmos-driver/*.bin
+rm cmos-driver/*.o

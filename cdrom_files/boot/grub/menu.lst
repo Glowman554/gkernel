@@ -7,3 +7,8 @@ title glowos-test
 kernel /kernel
 module /test.bin
 boot
+
+title glowos-cmos
+kernel /kernel
+module /cmos.bin
+boot

@@ -364,6 +364,9 @@ struct cpu_state* syscall(struct cpu_state* cpu)
 		    outb(0x64, 0xFE);
 		    asm volatile ("hlt");
 		    break;
+		case 3:
+            kprintf("%d", cpu->ebx);
+            break;
     }
 
     return cpu;
