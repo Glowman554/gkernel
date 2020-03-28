@@ -346,6 +346,9 @@ struct cpu_state* syscall(struct cpu_state* cpu)
     uint8_t in;
     char inbuff = 0;
     uint8_t good = 0x02;
+    
+    int h,m,s;
+    
     switch (cpu->eax) {
         case 0: /* putc */
             kprintf("%c", cpu->ebx);
@@ -367,6 +370,18 @@ struct cpu_state* syscall(struct cpu_state* cpu)
 		case 3:
             kprintf("%d", cpu->ebx);
             break;
+        case 4:
+        	h = read_h();
+        	cpu->ebx = h;
+        	break;
+        case 5:
+        	m = read_m();
+        	cpu->ebx = m;
+        	break;
+        case 6:
+        	s = read_s();
+        	cpu->ebx = s;
+        	break;
     }
 
     return cpu;

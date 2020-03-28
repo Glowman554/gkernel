@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "keyboard.h"
 #include "console.h"
+#include "io.h"
 
 
 char buff = 0;
@@ -157,17 +158,6 @@ char kbd_scancode[256][2] =
 
 static void send_command(uint8_t command);
 
-unsigned char inb(unsigned short _port)
-{
-	unsigned char result;
-	__asm__ ("inb %1, %0" : "=a" (result) : "Nd" (_port));
-	return result;
-}
-
-void outb(unsigned short _port, unsigned char _data)
-{
-	__asm__ ("outb %0, %1" : : "a" (_data), "Nd" (_port));
-}
 
 void init_keyboard(void)
 {

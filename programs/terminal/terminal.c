@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "cmos.h"
+
 
 void _start(void)
 {
@@ -66,7 +66,27 @@ void _start(void)
 					asm("int $0x30" : : "a" (0), "b" (10)); // return
 					break;
 				case 't':
-					print_time();
+					asm(
+					"mov $0x4, %eax;"
+					"int $0x30;"
+					"mov $0x3, %eax;"
+					"int $0x30;"
+					);
+					asm("int $0x30" : : "a" (0), "b" (':'));
+					asm(
+					"mov $0x5, %eax;"
+					"int $0x30;"
+					"mov $0x3, %eax;"
+					"int $0x30;"
+					); 
+					asm("int $0x30" : : "a" (0), "b" (':'));
+					asm(
+					"mov $0x6, %eax;"
+					"int $0x30;"
+					"mov $0x3, %eax;"
+					"int $0x30;"
+					); 
+					asm("int $0x30" : : "a" (0), "b" (10));  
 					break;
 			}
 			last = buff;

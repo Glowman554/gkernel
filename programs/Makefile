@@ -1,4 +1,4 @@
-all: terminal test cmos-driver
+all: terminal test
 
 terminal:
 	$(MAKE) -C terminal
@@ -6,8 +6,6 @@ terminal:
 test:
 	$(MAKE) -C test
 
-cmos-driver:
-	$(MAKE) -C cmos-driver
 
-.PHONY: all terminal test cmos-driver
+.PHONY: all terminal test
 
