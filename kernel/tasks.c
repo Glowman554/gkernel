@@ -20,31 +20,29 @@ void reboot();
 
 static void terminal(void)
 {
-	char buff;
-	char last;
-	register uint32_t input asm("ebx");
-	kprintf("\nPress h for help\n");
-	kprintf(">> ");
-    while (1) {
-    	asm("int $0x30" : : "a" (1));
-        buff = input;
-        if(buff != last){
-        	kprintf("%c\n", buff);
-	        switch(buff){
-	        	case 'r':
-	        		reboot();
-	        		break;
-	        	case 'h':
-	        		kprintf("r -> reboot\n");
-	        		kprintf("h -> help\n");
-	        		break;
-			}
-			last = buff;
-			kprintf(">> ");
-		}
-		//asm("int $0x30" : : "a" (1));
+	kprintf("\nStarting miniterm\n");
+	kprintf("Press h for help\n");
+	kprintf(">>");
+	char in;
+	while(1){
+		in = getchar();
+		kprintf("%c\n", in);
 		
-    }
+		switch(in){
+			case 'h':
+				kprintf("h -> help\n");
+				kprintf("e -> edit\n");
+				kprintf("r -> reboot\n");
+				break;
+			case 'e':
+				while(1) kprintf("%c", getchar());
+				break;
+			case 'r':
+				reboot();
+				break;
+		}
+		kprintf(">>");
+	}
 }
 
 
@@ -154,17 +152,10 @@ void init_elf(void* image)
 
 void init_multitasking(struct multiboot_info* mb_info)
 {
-
-        //kprintf("Calling init_task\n");
-        //init_task(terminal);
-        //init_task(task_b);
-        //init_task(task_c);
-        //init_task(task_d);
-        /*
-         * Wenn wir mindestens ein Multiboot-Modul haben, kopieren wir das
-         * erste davon nach 2 MB und erstellen dann einen neuen Task dafuer.
-         */
-        //kprintf("Geting multiboot modules\n");
+		if (mb_info->mbs_mods_count == 0){
+			kprintf("No multiboot modules\n");
+			init_task(terminal);
+		}
         if (mb_info->mbs_mods_count != 0) {
         	struct multiboot_module* modules = mb_info->mbs_mods_addr;
         	int i;

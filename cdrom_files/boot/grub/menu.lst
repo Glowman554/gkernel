@@ -1,9 +1,8 @@
 title glowos
 kernel /kernel
-module /terminal.bin
 boot
 
-title glowos-test
+title glowos-terminal
 kernel /kernel
-module /test.bin
+module /terminal.bin
 boot

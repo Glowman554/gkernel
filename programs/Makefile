@@ -1,11 +1,8 @@
-all: terminal test
+all: terminal
 
 terminal:
 	$(MAKE) -C terminal
 
-test:
-	$(MAKE) -C test
 
-
-.PHONY: all terminal test
+.PHONY: all terminal
 

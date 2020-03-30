@@ -3,9 +3,10 @@ rm *.o
 rm kernel
 cd driver/keyboard
 rm *.o
+cd ../..
+cd driver/cmos
+rm *.o
 cd ../../..
 cd programs
 rm terminal/*.bin
 rm terminal/*.o
-rm test/*.bin
-rm test/*.o
