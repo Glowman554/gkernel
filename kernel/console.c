@@ -6,6 +6,8 @@ static int y = 0;
 
 static char* video = (char*) 0xb8000;
 
+char color;
+
 static int kprintf_res = 0;
 
 static inline void outb(unsigned short port, unsigned char data)
@@ -41,7 +43,7 @@ static void kputc(char c)
     }
 
     video[2 * (y * 80 + x)] = c;
-    video[2 * (y * 80 + x) + 1] = 0x07;
+    video[2 * (y * 80 + x) + 1] = color;
 
     x++;
     kprintf_res++;
@@ -83,12 +85,12 @@ void clrscr(void)
     x = y = 0;
 }
 
-int kprintf(const char* fmt, ...)
+int kprintf(char c, const char* fmt, ...)
 {
     va_list ap;
     const char* s;
     unsigned long n;
-
+	color = c;
     va_start(ap, fmt);
     kprintf_res = 0;
     while (*fmt) {

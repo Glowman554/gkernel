@@ -161,7 +161,7 @@ static void send_command(uint8_t command);
 
 void init_keyboard(void)
 {
-	kprintf("Init keyboard  ");
+	kprintf(0xf,"Init keyboard  ");
     // Tastaturpuffer leeren
     while (inb(0x64) & 0x1) {
         inb(0x60);
@@ -169,7 +169,9 @@ void init_keyboard(void)
 
     // Tastatur aktivieren
     send_command(0xF4);
-    kprintf("[OK]\n");
+    kprintf(0xf,"[");
+    kprintf(0x2,"OK");
+    kprintf(0xf,"]\n");
 }
 
 /** Befehl an die Tastatur senden */

@@ -2,6 +2,6 @@
 #define CONSOLE_H
 
 void clrscr(void);
-int kprintf(const char* fmt, ...);
+int kprintf(char c, const char* fmt, ...);
 
 #endif

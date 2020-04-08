@@ -20,28 +20,28 @@ void reboot();
 
 static void terminal(void)
 {
-	kprintf("\nStarting miniterm\n");
-	kprintf("Press h for help\n");
-	kprintf(">>");
+	kprintf(0xf,"\nStarting miniterm\n");
+	kprintf(0xf,"Press h for help\n");
+	kprintf(0xf,">>");
 	char in;
 	while(1){
 		in = getchar();
-		kprintf("%c\n", in);
+		kprintf(0xf,"%c\n", in);
 		
 		switch(in){
 			case 'h':
-				kprintf("h -> help\n");
-				kprintf("e -> edit\n");
-				kprintf("r -> reboot\n");
+				kprintf(0xf,"h -> help\n");
+				kprintf(0xf,"e -> edit\n");
+				kprintf(0xf,"r -> reboot\n");
 				break;
 			case 'e':
-				while(1) kprintf("%c", getchar());
+				while(1) kprintf(0xf,"%c", getchar());
 				break;
 			case 'r':
 				reboot();
 				break;
 		}
-		kprintf(">>");
+		kprintf(0xf,">>");
 	}
 }
 
@@ -122,7 +122,7 @@ void init_elf(void* image)
 
     /* Ist es ueberhaupt eine ELF-Datei? */
     if (header->magic != ELF_MAGIC) {
-        kprintf("Keine gueltige ELF-Magic!\n");
+        kprintf(0x4, "Keine gueltige ELF-Magic!\n");
         return;
     }
 
@@ -153,7 +153,7 @@ void init_elf(void* image)
 void init_multitasking(struct multiboot_info* mb_info)
 {
 		if (mb_info->mbs_mods_count == 0){
-			kprintf("No multiboot modules\n");
+			kprintf(0x4,"No multiboot modules\n");
 			init_task(terminal);
 		}
         if (mb_info->mbs_mods_count != 0) {

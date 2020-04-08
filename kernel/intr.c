@@ -351,7 +351,7 @@ struct cpu_state* syscall(struct cpu_state* cpu)
     
     switch (cpu->eax) {
         case 0: /* putc */
-            kprintf("%c", cpu->ebx);
+            kprintf(cpu->ecx, "%c", cpu->ebx);
             break;
         case 1:	//getchar
 	       	while(inbuff == 0){
@@ -368,7 +368,7 @@ struct cpu_state* syscall(struct cpu_state* cpu)
 		    asm volatile ("hlt");
 		    break;
 		case 3:
-            kprintf("%d", cpu->ebx);
+            kprintf(cpu->ecx, "%d", cpu->ebx);
             break;
         case 4:
         	h = read_h();
@@ -392,7 +392,7 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
     struct cpu_state* new_cpu = cpu;
 	//kprintf("Interupt %d!\n", cpu->intr);
     if (cpu->intr <= 0x1f) {
-        kprintf("Exception %d, Kernel angehalten!\n", cpu->intr);
+        kprintf(0x4, "Exception %d, Kernel angehalten!\n", cpu->intr);
 
         // TODO Hier den CPU-Zustand ausgeben
 
@@ -419,7 +419,7 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
     } else if (cpu->intr == 0x30) {
         new_cpu = syscall(cpu);
     } else {
-        kprintf("Unbekannter Interrupt\n");
+        kprintf(0x4, "Unbekannter Interrupt\n");
         while(1) {
             // Prozessor anhalten
             asm volatile("cli; hlt");

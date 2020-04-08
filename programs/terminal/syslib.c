@@ -1,20 +1,20 @@
 #include "syslib.h"
 #include <stdint.h>
 
-void pchar(char msg)
+void pchar(char c, char msg)
 {
-	asm("int $0x30" : : "a" (0), "b" (msg)); 
+	asm("int $0x30" : : "a" (0), "b" (msg), "c" (c)); 
 }
 
-void pnum(int num)
+void pnum(char c, int num)
 {
-	asm("int $0x30" : : "a" (3), "b" (num));
+	asm("int $0x30" : : "a" (3), "b" (num), "c" (c));
 }
 
-void pstring(int len, char msg[])
+void pstring(char c, int len, char msg[])
 {
 	for (int i = 0; i < len; i++) {
-        asm("int $0x30" : : "a" (0), "b" (msg[i]));
+        asm("int $0x30" : : "a" (0), "b" (msg[i]), "c" (c));
     }
 }
 
