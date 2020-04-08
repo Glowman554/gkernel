@@ -6,7 +6,7 @@ static int y = 0;
 
 static char* video = (char*) 0xb8000;
 
-char color;
+char color = 0xf;
 
 static int kprintf_res = 0;
 
@@ -56,7 +56,7 @@ static void kputs(const char* s)
     }
 }
 
-static void kputn(unsigned long x, int base)
+void kputn(unsigned long x, int base)
 {
     char buf[65];
     const char* digits = "0123456789abcdefghijklmnopqrstuvwxyz";
@@ -83,6 +83,18 @@ void clrscr(void)
     }
 
     x = y = 0;
+}
+
+void setx(int i){
+	x = i;
+}
+
+void sety(int i){
+	y = i;
+}
+
+void setcolor(char c){
+	color = c;
 }
 
 int kprintf(char c, const char* fmt, ...)

@@ -4,6 +4,7 @@
 #include "multiboot.h"
 #include "driver/keyboard/keyboard.h"
 #include "driver/cmos/cmos.h"
+#include "widget.h"
 
 char* version = "v0.1.8";
 
@@ -17,7 +18,7 @@ void init(struct multiboot_info *mb_info)
     
     init_intr();
     
-    //asm volatile("int $0x0");
+    //asm volatile("int $0x1");
     init_keyboard();
     init_multitasking(mb_info);
 }

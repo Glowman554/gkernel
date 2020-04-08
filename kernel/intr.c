@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "console.h"
 #include "driver/keyboard/keyboard.h"
+#include "widget.h"
 
 extern void intr_stub_0(void);
 extern void intr_stub_1(void);
@@ -392,7 +393,7 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
     struct cpu_state* new_cpu = cpu;
 	//kprintf("Interupt %d!\n", cpu->intr);
     if (cpu->intr <= 0x1f) {
-        kprintf(0x4, "Exception %d, Kernel angehalten!\n", cpu->intr);
+        create_error(cpu->intr);
 
         // TODO Hier den CPU-Zustand ausgeben
 
