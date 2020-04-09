@@ -6,6 +6,9 @@ rm *.o
 cd ../..
 cd driver/cmos
 rm *.o
+cd ../..
+cd driver/pit
+rm *.o
 cd ../../..
 cd programs
 rm terminal/*.bin

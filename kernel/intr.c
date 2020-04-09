@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "console.h"
 #include "driver/keyboard/keyboard.h"
+#include "driver/pit/pit.h"
 #include "widget.h"
 
 extern void intr_stub_0(void);
@@ -383,6 +384,15 @@ struct cpu_state* syscall(struct cpu_state* cpu)
         	s = read_s();
         	cpu->ebx = s;
         	break;
+        case 7:
+        	reset_tick();
+        	break;
+        case 8:
+        	cpu->ebx = get_tick();
+        	break;
+        case 9:
+        	create_error(1);
+        	break;
     }
 
     return cpu;
@@ -407,8 +417,11 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
             new_cpu = schedule(cpu);
             tss[1] = (uint32_t) (new_cpu + 1);
         }
+        if(cpu->intr == 32){
+        	pit_irq_handler(cpu->intr);
+		}
 		if(cpu->intr == 33){ 
-            irq_handler(cpu->intr);
+            keyboard_irq_handler(cpu->intr);
 		}	
         if (cpu->intr >= 0x28) {
             // EOI an Slave-PIC

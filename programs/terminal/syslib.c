@@ -11,10 +11,11 @@ void pnum(char c, int num)
 	asm("int $0x30" : : "a" (3), "b" (num), "c" (c));
 }
 
-void pstring(char c, int len, char msg[])
+void pstring(char c, char msg[])
 {
-	for (int i = 0; i < len; i++) {
-        asm("int $0x30" : : "a" (0), "b" (msg[i]), "c" (c));
+	int i;
+    for (i = 0; msg[i] != '\0'; i++) {
+    	asm("int $0x30" : : "a" (0), "b" (msg[i]), "c" (c));
     }
 }
 
@@ -49,4 +50,16 @@ int read_s()
 void reboot()
 {
 	asm("int $0x30" : : "a" (2));
+}
+
+void reset_tick()
+{
+	asm("int $0x30" : : "a" (7));
+}
+
+int get_tick()
+{
+	register int input asm("ebx");
+	asm("int $0x30" : : "a" (8));
+	return input;
 }

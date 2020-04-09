@@ -188,7 +188,7 @@ char getchar(){
 	return buff;
 }
 
-void irq_handler(uint8_t irq) {
+void keyboard_irq_handler(uint8_t irq) {
     uint8_t scancode;
  
     scancode = inb(0x60);

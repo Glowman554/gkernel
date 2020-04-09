@@ -7,6 +7,7 @@
 #include "multiboot.h"
 #include "elf.h"
 #include "driver/keyboard/keyboard.h"
+#include "widget.h"
 
 struct task {
     struct cpu_state*   cpu_state;
@@ -33,12 +34,16 @@ static void terminal(void)
 				kprintf(0xf,"h -> help\n");
 				kprintf(0xf,"e -> edit\n");
 				kprintf(0xf,"r -> reboot\n");
+				kprintf(0xf,"w -> Debug Error\n");
 				break;
 			case 'e':
 				while(1) kprintf(0xf,"%c", getchar());
 				break;
 			case 'r':
 				reboot();
+				break;
+			case 'w':
+				asm("int $0x30" : : "a" (9));
 				break;
 		}
 		kprintf(0xf,">>");
