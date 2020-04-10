@@ -15,12 +15,12 @@ void _start(void)
 		sety(0);
 		setx(x);
 		pchar(0xa, 219);
-		sety(24);
+		sety(22);
 		setx(x);
 		pchar(0xa, 219);
 	}
 	
-	for(int y = 0; y < 25; y++){
+	for(int y = 0; y < 22; y++){
 		sety(y);
 		setx(0);
 		pchar(0xa, 219);
@@ -69,9 +69,9 @@ void _start(void)
 			x = 0;
 		}
 		
-		if(y == 22){
+		if(y == 20){
 			setx(80/2-(14/2));
-			sety(24);
+			sety(22);
 			pstring(0xa4, "No more space!");
 			while(1);
 		}

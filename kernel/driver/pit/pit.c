@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "pit.h"
 #include "io.h"
+#include "info_line.h"
 #include "console.h"
 
 uint32_t tick = 0;
@@ -21,7 +22,7 @@ void pit_irq_handler(uint8_t irq)
 {
 	tick++;
 	//kprintf(0xa, "Tick %d\n", tick);
-	
+	drawinfo(tick);
 	if(tick > 1000000) tick = 0;
 }
 

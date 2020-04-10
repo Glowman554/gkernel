@@ -1,5 +1,8 @@
 #include <stdarg.h>
+#include <stdbool.h>
 #include "console.h"
+
+bool scrole = true;
 
 static int x = 0;
 static int y = 0;
@@ -14,7 +17,10 @@ static inline void outb(unsigned short port, unsigned char data)
 {
     asm volatile ("outb %0, %1" : : "a" (data), "Nd" (port));
 }
-
+void setscrole(bool s)
+{
+	scrole = s;
+}
 static void kputc(char c)
 {
     if ((c == '\n') || (x > 79)) {
@@ -30,9 +36,9 @@ static void kputc(char c)
         return;
     }
 
-    if (y > 24) {
+    if (scrole && y > 22) {
         int i;
-        for (i = 0; i < 2 * 24 * 80; i++) {
+        for (i = 0; i < 2 * 22 * 80; i++) {
             video[i] = video[i + 160];
         }
 
@@ -91,6 +97,14 @@ void setx(int i){
 
 void sety(int i){
 	y = i;
+}
+
+int getx(){
+	return x;
+}
+
+int gety(){
+	return y;
 }
 
 void setcolor(char c){

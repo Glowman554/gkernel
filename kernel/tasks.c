@@ -161,6 +161,8 @@ void init_multitasking(struct multiboot_info* mb_info)
 			kprintf(0x4,"No multiboot modules\n");
 			init_task(terminal);
 		}
+		
+		
         if (mb_info->mbs_mods_count != 0) {
         	struct multiboot_module* modules = mb_info->mbs_mods_addr;
         	int i;
