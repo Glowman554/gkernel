@@ -1,8 +1,12 @@
-all: terminal
+all: terminal writer
 
 terminal:
 	$(MAKE) -C terminal
+	
+writer:
+	$(MAKE) -C writer
+	
 
 
-.PHONY: all terminal
+.PHONY: all terminal writer
 

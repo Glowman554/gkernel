@@ -6,3 +6,8 @@ title glowos-terminal
 kernel /kernel
 module /terminal.bin
 boot
+
+title glowos-writer
+kernel /kernel
+module /writer.bin
+boot

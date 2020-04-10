@@ -13,3 +13,5 @@ cd ../../..
 cd programs
 rm terminal/*.bin
 rm terminal/*.o
+rm writer/*.bin
+rm writer/*.o

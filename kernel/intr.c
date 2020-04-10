@@ -393,6 +393,15 @@ struct cpu_state* syscall(struct cpu_state* cpu)
         case 9:
         	create_error(1);
         	break;
+        case 10:
+        	clrscr();
+        	break;
+        case 11:
+        	setx(cpu->ebx);
+        	break;
+        case 12:
+        	sety(cpu->ebx);
+        	break;
     }
 
     return cpu;
