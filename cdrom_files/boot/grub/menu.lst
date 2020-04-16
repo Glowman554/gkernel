@@ -1,13 +1,16 @@
 title glowos
 kernel /kernel
+module /initrd.img
 boot
 
 title glowos-terminal
 kernel /kernel
+module /initrd.img
 module /terminal.bin
 boot
 
 title glowos-writer
 kernel /kernel
+module /initrd.img
 module /writer.bin
 boot

@@ -1,5 +1,6 @@
 #include <stddef.h>
-#include <string.h>
+#include <stdbool.h>
+#include "string.h"
 
 #include "console.h"
 #include "intr.h"
@@ -8,6 +9,8 @@
 #include "elf.h"
 #include "driver/keyboard/keyboard.h"
 #include "widget.h"
+#include "fs.h"
+#include "initrd.h"
 
 struct task {
     struct cpu_state*   cpu_state;
@@ -67,7 +70,7 @@ void reboot()
  */
 struct task* init_task(void* entry)
 {
-	//kprintf("Calling pmm_alloc\n");
+	//kprintf(0xa, "Calling pmm_alloc\n");
     uint8_t* stack = pmm_alloc();
     uint8_t* user_stack = pmm_alloc();
 
@@ -99,14 +102,14 @@ struct task* init_task(void* entry)
      * worden. So kann man dem Interrupthandler den neuen Task unterschieben
      * und er stellt einfach den neuen Prozessorzustand "wieder her".
      */
-    //kprintf("Init cpu_state\n");
+    //kprintf(0xa, "Init cpu_state\n");
     struct cpu_state* state = (void*) (stack + 4096 - sizeof(new_state));
     *state = new_state;
 
     /*
      * Neue Taskstruktur anlegen und in die Liste einhaengen
      */
-    //kprintf("Calling pmm_alloc\n");
+    //kprintf(0xa, "Calling pmm_alloc\n");
     struct task* task = pmm_alloc();
     task->cpu_state = state;
     task->next = first_task;
@@ -155,23 +158,47 @@ void init_elf(void* image)
     init_task((void*) header->entry);
 }
 
+bool test_elf_header(void* image);
+
 void init_multitasking(struct multiboot_info* mb_info)
 {
-		if (mb_info->mbs_mods_count == 0){
-			kprintf(0x4,"No multiboot modules\n");
-			init_task(terminal);
-		}
-		
-		
-        if (mb_info->mbs_mods_count != 0) {
-        	struct multiboot_module* modules = mb_info->mbs_mods_addr;
-        	int i;
+	if (mb_info->mbs_mods_count == 0){
+		kprintf(0x4,"No multiboot modules\n");
+		init_task(terminal);
+	}
+	
+	
+	if (mb_info->mbs_mods_count != 0) {
+     	struct multiboot_module* modules = mb_info->mbs_mods_addr;
+       	int i;
 
-        	for (i = 0; i < mb_info->mbs_mods_count; i++) {
-        		//kprintf("Calling init_elf\n");
-            	init_elf((void*) modules[i].mod_start);
-        	}
-    	}
+       	for (i = 0; i < mb_info->mbs_mods_count; i++) {
+       		if(test_elf_header((void*) modules[i].mod_start)){
+			
+           		init_elf((void*) modules[i].mod_start);
+           	}else if(mb_info->mbs_mods_count == 1){
+           		initialise_initrd((void*) modules[i].mod_start);
+           		init_task(terminal);
+			}else{
+				initialise_initrd((void*) modules[i].mod_start);
+			}
+       	}
+   	}
+}
+
+bool test_elf_header(void* image)
+{
+
+    struct elf_header* header = image;
+
+    /* Ist es ueberhaupt eine ELF-Datei? */
+    if (header->magic != ELF_MAGIC) {
+        
+        return false;
+    } else {
+    	return true;
+	}
+
 }
 
 /*

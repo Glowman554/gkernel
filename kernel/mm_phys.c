@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include <string.h>
+#include "string.h"
 #include "mm.h"
 #include "multiboot.h"
 

@@ -413,7 +413,7 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 	//kprintf("Interupt %d!\n", cpu->intr);
     if (cpu->intr <= 0x1f) {
         create_error(cpu->intr);
-
+		//kprintf(0x4, "Exception %d ", cpu->intr);
         // TODO Hier den CPU-Zustand ausgeben
 
 	        while(1) {

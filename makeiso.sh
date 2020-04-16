@@ -1,9 +1,11 @@
 cd cdrom_files
 rm terminal.bin
 rm kernel
+rm writer.bin
+rm initrd.img
 cd ..
 cp ./kernel/kernel ./cdrom_files
 cp ./programs/terminal/terminal.bin ./cdrom_files
 cp ./programs/writer/writer.bin ./cdrom_files
-
+cp ./initrd/initrd.img ./cdrom_files
 mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -o cdrom.iso cdrom_files/

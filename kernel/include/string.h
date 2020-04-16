@@ -1,29 +1,16 @@
 #ifndef STRING_H
 #define STRING_H
 
+#include <stdint.h>
 #include <stddef.h>
 
-static inline void* memset(void* buf, int c, int n)
-{
-    unsigned char* p = buf;
+inline void* memset(void* buf, int c, int n);
+inline void* memcpy(void* dest, const void* src, size_t n);
+int strcmp(char *str1, char *str2);
+char *strcpy(char *dest, const char *src);
+char *strcat(char *dest, const char *src);
 
-    while (n--) {
-        *p++ = c;
-    }
+int strlen(char *src);
 
-    return buf;
-}
-
-static inline void* memcpy(void* dest, const void* src, size_t n)
-{
-    unsigned char* d = dest;
-    const unsigned char* s = src;
-
-    while (n--) {
-        *d++ = *s++;
-    }
-
-    return dest;
-}
 
 #endif
