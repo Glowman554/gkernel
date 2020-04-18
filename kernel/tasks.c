@@ -38,6 +38,7 @@ static void terminal(void)
 				kprintf(0xf,"e -> edit\n");
 				kprintf(0xf,"r -> reboot\n");
 				kprintf(0xf,"w -> Debug Error\n");
+				kprintf(0xf,"v -> init vga\n");
 				break;
 			case 'e':
 				while(1) kprintf(0xf,"%c", getchar());
@@ -47,6 +48,9 @@ static void terminal(void)
 				break;
 			case 'w':
 				asm("int $0x30" : : "a" (9));
+				break;
+			case 'v':
+				asm("int $0x30" : : "a" (13));
 				break;
 		}
 		kprintf(0xf,">>");

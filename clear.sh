@@ -9,7 +9,13 @@ rm *.o
 cd ../..
 cd driver/pit
 rm *.o
-cd ../../..
+cd ../..
+cd driver/vga
+rm *.o
+cd ../..
+cd gui
+rm *.o
+cd ../..
 cd programs
 rm terminal/*.bin
 rm terminal/*.o

@@ -5,11 +5,17 @@
 #include "driver/keyboard/keyboard.h"
 #include "driver/cmos/cmos.h"
 #include "driver/pit/pit.h"
+#include "driver/vga/vga.h"
 #include "widget.h"
 #include "fs.h"
 #include "initrd.h"
+#include "bios.h"
+#include "gui/desktop.h"
 
-char* version = "v0.1.9";
+char* version = "v0.2.0";
+
+extern void int32(unsigned char intnum, regs16_t *regs);
+
 
 
 void init(struct multiboot_info *mb_info)
@@ -26,9 +32,15 @@ void init(struct multiboot_info *mb_info)
     init_keyboard();
     init_pit(5);
 	init_multitasking(mb_info);
+	//init_vga();
+	//init_desktop(version);
 	
 	
-		int i = 0;
+	//create_view(20,35,200,100,"Test");
+	//create_view(200,20,100,50,"Test2");
+	
+	
+	int i = 0;
 	struct dirent *node = 0;
 	while ( (node = readdir_fs(fs_root, i)) != 0)
 	{

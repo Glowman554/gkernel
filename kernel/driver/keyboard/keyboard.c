@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "keyboard.h"
 #include "console.h"
+#include "../../gui/cursor.h"
 #include "io.h"
 
 
@@ -193,7 +194,29 @@ void keyboard_irq_handler(uint8_t irq) {
  
     scancode = inb(0x60);
     
-	//kprintf("%c", kbd_scancode[scancode][0]);
+    //mouse right -> 77
+    //mouse left -> 75
+    //mouse up -> 72
+    //mouse down -> 80
+    
+    
+    switch(scancode)
+    {
+    	case 77:
+    		cursor_move_right();
+    		break;
+    	case 75:
+    		cursor_move_left();
+    		break;
+    	case 72:
+    		cursor_move_up();
+    		break;
+    	case 80:
+    		cursor_move_down();
+    		break;
+	}
+    
+	//kprintf(0xa, "%d\n", scancode);
 	buff = kbd_scancode[scancode][0];
    
 }

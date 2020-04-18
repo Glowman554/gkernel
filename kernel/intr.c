@@ -402,6 +402,11 @@ struct cpu_state* syscall(struct cpu_state* cpu)
         case 12:
         	sety(cpu->ebx);
         	break;
+        case 13:
+        	init_vga();
+			init_desktop("v0.2.0");
+			create_view(20,35,200,100,"Test");
+        	break;
     }
 
     return cpu;
@@ -410,7 +415,7 @@ struct cpu_state* syscall(struct cpu_state* cpu)
 struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 {
     struct cpu_state* new_cpu = cpu;
-	//kprintf("Interupt %d!\n", cpu->intr);
+	//kprintf(0x4, "Interupt %d!\n", cpu->intr);
     if (cpu->intr <= 0x1f) {
         create_error(cpu->intr);
 		//kprintf(0x4, "Exception %d ", cpu->intr);
@@ -431,7 +436,8 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 		}
 		if(cpu->intr == 33){ 
             keyboard_irq_handler(cpu->intr);
-		}	
+            //kprintf(0x4, "Interupt %d!\n", cpu->intr);
+		}
         if (cpu->intr >= 0x28) {
             // EOI an Slave-PIC
             outb(0xa0, 0x20);
