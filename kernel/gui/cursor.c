@@ -9,6 +9,7 @@ bool reloadp = false;
 int x,y = 0;
 
 void cursor_move_up() {
+	//kprintf(0x4,"%d,%d\n", x,y);
 	if(reloadp) loadpixel();
 	y--;
 	savepixel();
@@ -17,6 +18,7 @@ void cursor_move_up() {
 }
 
 void cursor_move_down() {
+	//kprintf(0x4,"%d,%d\n", x,y);
 	if(reloadp) loadpixel();
 	y++;
 	savepixel();
@@ -25,6 +27,7 @@ void cursor_move_down() {
 }
 
 void cursor_move_left() {
+	//kprintf(0x4,"%d,%d\n", x,y);
 	if(reloadp) loadpixel();
 	x--;
 	savepixel();
@@ -33,6 +36,7 @@ void cursor_move_left() {
 }
 
 void cursor_move_right() {
+	//kprintf(0x4,"%d,%d\n", x,y);
 	if(reloadp) loadpixel();
 	x++;
 	savepixel();

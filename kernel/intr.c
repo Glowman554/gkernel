@@ -4,6 +4,7 @@
 #include "console.h"
 #include "driver/keyboard/keyboard.h"
 #include "driver/pit/pit.h"
+#include "gui/info_app.h"
 #include "widget.h"
 
 extern void intr_stub_0(void);
@@ -403,10 +404,13 @@ struct cpu_state* syscall(struct cpu_state* cpu)
         	sety(cpu->ebx);
         	break;
         case 13:
-        	init_vga();
-			init_desktop("v0.2.0");
-			create_view(20,35,200,100,"Test");
+			info_app_main();
         	break;
+        case 14:
+        	init_vga();
+			init_desktop("v0.2.1");
+			init_info_app();
+			break;
     }
 
     return cpu;

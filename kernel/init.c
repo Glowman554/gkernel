@@ -11,12 +11,9 @@
 #include "initrd.h"
 #include "bios.h"
 #include "gui/desktop.h"
+#include "gui/info_app.h"
 
-char* version = "v0.2.0";
-
-extern void int32(unsigned char intnum, regs16_t *regs);
-
-
+char* version = "v0.2.1";
 
 void init(struct multiboot_info *mb_info)
 {
@@ -34,6 +31,7 @@ void init(struct multiboot_info *mb_info)
 	init_multitasking(mb_info);
 	//init_vga();
 	//init_desktop(version);
+	//init_info_app();
 	
 	
 	//create_view(20,35,200,100,"Test");
