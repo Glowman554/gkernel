@@ -67,6 +67,9 @@ static void cursor_manager(void) {
 				if(getcx() > 5 && getcx() < 25 && getcy() > 20 && getcy() < 40) {
 					asm("int $0x30" : : "a" (13));
 				}
+				if(getcx() > 5 && getcx() < 25 && getcy() > 45 && getcy() < 65) {
+					asm("int $0x30" : : "a" (15));
+				}
 				break;
 		}
 	}
@@ -193,10 +196,10 @@ void init_multitasking(struct multiboot_info* mb_info) {
 
 				init_elf((void*) modules[i].mod_start);
 			} else if(mb_info->mbs_mods_count == 1) {
-				initialise_initrd((void*) modules[i].mod_start);
+				fs_root = initialise_initrd((void*) modules[i].mod_start);
 				init_task(terminal);
 			} else {
-				initialise_initrd((void*) modules[i].mod_start);
+				fs_root = initialise_initrd((void*) modules[i].mod_start);
 			}
 		}
 	}

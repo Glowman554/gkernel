@@ -5,6 +5,7 @@
 #include "driver/keyboard/keyboard.h"
 #include "driver/pit/pit.h"
 #include "gui/info_app.h"
+#include "gui/files.h"
 #include "widget.h"
 
 extern void intr_stub_0(void);
@@ -410,6 +411,10 @@ struct cpu_state* syscall(struct cpu_state* cpu)
         	init_vga();
 			init_desktop("v0.2.1");
 			init_info_app();
+			init_files_app();
+			break;
+		case 15:
+			files_app_main();
 			break;
     }
 

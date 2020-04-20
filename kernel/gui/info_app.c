@@ -38,6 +38,7 @@ void init_info_app()
 
 void info_app_main()
 {
+	asm("int $0x30" : : "a" (14));
 	create_view(30,35,210,100,"info");
 	
 	int ox = 31;
