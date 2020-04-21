@@ -51,17 +51,16 @@ void files_app_main()
 	{
 		int len = strlen(node->name);
 		char new_name[len];
+		char color;
 		strcpy(new_name, node->name);
-		if(node->name[len-1] == 'g' && node->name[len-2] == 'm' && node->name[len-3] == 'i' && node->name[len-4] == '.'){
-  			new_name[len-1] = ' '; 
-			new_name[len-2] = ' ';
-			new_name[len-3] = ' ';
-			new_name[len-4] = ' ';
-
-		}
+		fs_node_t *fsnode = finddir_fs(fs_root, node->name);
+		if ((fsnode->flags&0x7) == FS_DIRECTORY)
+    		color = 13;
+  		else
+			color = 14;
 		for(int i = 0; i < len; i++)
 		{
-			draw_char(new_name[i], ox+1+(i*8), oy, 10, 7);	
+			draw_char(new_name[i], ox+1+(i*8), oy, color, 7);	
 		}
 		oy = oy + 14;
 		i++;
