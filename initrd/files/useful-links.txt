@@ -1,3 +1,0 @@
-lowlevel.eu
-github.com/Glowman554/glowos
-osdev.org

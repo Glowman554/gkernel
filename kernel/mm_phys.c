@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "string.h"
 #include "mm.h"
+#include "config.h"
 #include "multiboot.h"
 
 /*
@@ -88,6 +89,7 @@ void* pmm_alloc(void)
             for (j = 0; j < 32; j++) {
                 if (bitmap[i] & (1 << j)) {
                     bitmap[i] &= ~(1 << j);
+					if(DEBUG) kprintf(0xa, "pmm_alloc: 0x%x\n", (i * 32 + j) * 4096);
                     return (void*)( (i * 32 + j) * 4096);
                 }
             }

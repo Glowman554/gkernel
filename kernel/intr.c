@@ -7,6 +7,8 @@
 #include "gui/info_app.h"
 #include "gui/files.h"
 #include "widget.h"
+#include "fs.h"
+#include "initrd.h"
 
 extern void intr_stub_0(void);
 extern void intr_stub_1(void);
@@ -341,6 +343,45 @@ void init_intr(void)
     asm volatile("sti");
 }
 
+static void cursor_manager(void) {
+	char in;
+	while(1) {
+		reset_tick();
+		while(get_tick() < 5);
+		in = getchar();
+		switch(in) {
+			case ' ':
+				if(getcx() > 5 && getcx() < 25 && getcy() > 20 && getcy() < 40) {
+					asm("int $0x30" : : "a" (13));
+				}
+				if(getcx() > 5 && getcx() < 25 && getcy() > 45 && getcy() < 65) {
+					asm("int $0x30" : : "a" (15));
+				}
+				break;
+		}
+	}
+}
+
+void ls()
+{
+	int i = 0;
+	struct dirent *node = 0;
+	kprintf(0x8, "");
+	while ( (node = readdir_fs(fs_root, i)) != 0)
+	{
+		int len = strlen(node->name);
+		//kprintf(0x8, "%d\n", len);
+		fs_node_t *fsnode = finddir_fs(fs_root, node->name);
+		
+		if ((fsnode->flags&0x7) == FS_DIRECTORY)
+			for(int i = 0; i < len; i++) kprintf(0xa, "%c", node->name[i]);
+		else
+			for(int i = 0; i < len; i++) kprintf(0xf, "%c", node->name[i]);
+		kprintf(0x8, "\n");
+		i++;
+	}
+}
+
 struct cpu_state* syscall(struct cpu_state* cpu)
 {
     /*
@@ -350,8 +391,11 @@ struct cpu_state* syscall(struct cpu_state* cpu)
     uint8_t in;
     char inbuff = 0;
     uint8_t good = 0x02;
+	char buf[10000];
     
     int h,m,s;
+	uint32_t sz;
+	struct fs_node_t *fsnode = 0;
     
     switch (cpu->eax) {
         case 0: /* putc */
@@ -416,6 +460,19 @@ struct cpu_state* syscall(struct cpu_state* cpu)
 		case 15:
 			files_app_main();
 			break;
+		case 16:
+			init_task(cursor_manager);
+			break;
+		case 17:
+			fsnode = finddir_fs(fs_root, cpu->ebx);
+			uint32_t sz = read_fs(fsnode, 0, 10000, buf);
+			//kprintf(0xa, "%c%c%c%c\n", buf[0], buf[1], buf[2], buf[3]);
+			init_elf((void*) buf);
+			break;
+		case 18:
+			ls();
+			break;
+            
     }
 
     return cpu;

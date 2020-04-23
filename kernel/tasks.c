@@ -22,71 +22,6 @@ static struct task* current_task = NULL;
 
 struct task* init_task(void* entry);
 
-void reboot();
-
-
-static void cursor_manager(void) {
-	char in;
-	while(1) {
-		reset_tick();
-		while(get_tick() < 5);
-		in = getchar();
-		switch(in) {
-			case ' ':
-				if(getcx() > 5 && getcx() < 25 && getcy() > 20 && getcy() < 40) {
-					asm("int $0x30" : : "a" (13));
-				}
-				if(getcx() > 5 && getcx() < 25 && getcy() > 45 && getcy() < 65) {
-					asm("int $0x30" : : "a" (15));
-				}
-				break;
-		}
-	}
-}
-
-static void starter(void) {
-	kprintf(0xf,"\nStarting miniterm\n");
-	kprintf(0xf,">>");
-	
-	
-	char in[256];
-	int len = 0;
-	bool reading = true;
-	
-	while(1) {
-		while(reading){
-			in[len] = getchar();
-			kprintf(0x8, "%c", in[len]);
-			if(in[len] == 10){
-				in[len] = '\0';
-				reading = false;
-				if(strcmp(in, "desktop") == 1){
-					fs_node_t *fsnode = finddir_fs(fs_root, in);
-		
-					char buf[10000];
-		
-					uint32_t sz = read_fs(fsnode, 0, 10000, buf);
-					init_elf((void*) buf);
-				}else{
-					init_task(cursor_manager);
-					asm("int $0x30" : : "a" (14));
-				}
-			}else{
-				len++;
-			}
-		}
-		while(1);
-	}
-}
-
-void reboot() {
-	uint8_t good = 0x02;
-	while (good & 0x02)
-		good = inb(0x64);
-	outb(0x64, 0xFE);
-	asm volatile ("hlt");
-}
-
 /*
  * Jeder Task braucht seinen eigenen Stack, auf dem er beliebig arbeiten kann,
  * ohne dass ihm andere Tasks Dinge ueberschreiben. Ausserdem braucht ein Task
@@ -187,7 +122,6 @@ void init_multitasking(struct multiboot_info* mb_info) {
 	
 	if (mb_info->mbs_mods_count == 0) {
 		kprintf(0x4,"No multiboot modules\n");
-		init_task(starter);
 	}
 	//init_task(cursor_manager);
 
@@ -197,6 +131,7 @@ void init_multitasking(struct multiboot_info* mb_info) {
 		
 		fs_root = initialise_initrd((void*) modules[0].mod_start);
 		
+		/*
 		int i = 0;
 		struct dirent *node = 0;
 	
@@ -216,16 +151,16 @@ void init_multitasking(struct multiboot_info* mb_info) {
 			kprintf(0x8, "\n");
 			i++;
 		}
+		*/
 		
-		init_task(starter);
-		//fs_node_t *fsnode = finddir_fs(fs_root, "terminal.bin");
+		fs_node_t *fsnode = finddir_fs(fs_root, "terminal.bin");
 		
-		//char buf[10000];
+		char buf[10000];
 		
-		//uint32_t sz = read_fs(fsnode, 0, 10000, buf);
+		uint32_t sz = read_fs(fsnode, 0, 10000, buf);
 		
 		//kprintf(0xa, "%c%c%c%c\n", buf[0], buf[1], buf[2], buf[3]);
-		//init_elf((void*) buf);
+		init_elf((void*) buf);
 	}
 
 

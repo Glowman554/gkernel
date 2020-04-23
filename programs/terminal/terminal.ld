@@ -9,8 +9,8 @@ OUTPUT_FORMAT(elf32-i386)
  */
 SECTIONS
 {
-    /* Das Programm wird an 2 MB geladen */
-    . = 0x200000;
+    /* Das Programm wird an 10 MB geladen */
+    . = 0x1000000;
 
     .text : {
         *(.text)
