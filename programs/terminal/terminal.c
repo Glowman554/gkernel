@@ -12,7 +12,7 @@ void _start(void)
 	pstring(0xa, "Type in help to get a list of aviable commands");
 	pchar(0xf,10); // return
     
-	int len;
+	int len = 0;
 	char in[100];
 	
     
