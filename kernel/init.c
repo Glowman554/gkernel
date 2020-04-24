@@ -13,6 +13,7 @@
 #include "bios.h"
 #include "gui/desktop.h"
 #include "gui/info_app.h"
+#include "pci.h"
 
 char* version = "v0.2.1";
 
@@ -32,7 +33,6 @@ void init(struct multiboot_info *mb_info)
 	init_multitasking(mb_info);
 	
 	
-	
 	if(DEBUG){
 		int i = 0;
 		struct dirent *node = 0;
@@ -40,7 +40,7 @@ void init(struct multiboot_info *mb_info)
 		while ( (node = readdir_fs(fs_root, i)) != 0)
 		{
 			int len = strlen(node->name);
-			kprintf(0x8, "%d\n", len);
+			//kprintf(0x8, "%d\n", len);
 			fs_node_t *fsnode = finddir_fs(fs_root, node->name);
 			
 			if ((fsnode->flags&0x7) == FS_DIRECTORY)
@@ -53,6 +53,8 @@ void init(struct multiboot_info *mb_info)
 			i++;
 		}
 	}
+	
+	if(DEBUG) get_pci_devices();
 	
 	//init_vga();
 	//init_desktop(version);

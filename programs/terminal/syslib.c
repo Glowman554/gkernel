@@ -94,3 +94,7 @@ int strcmp(char *str1, char *str2)
   
       return failed;
 }
+
+void lspci(){
+	asm("int $0x30" : : "a" (19));
+}

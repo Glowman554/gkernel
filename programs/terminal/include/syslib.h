@@ -15,6 +15,7 @@ void setx(int x);
 void sety(int y);
 void clrscr();
 void ls();
+void lspci();
 void exec(char p[]);
 int strcmp(char *str1, char *str2);
 #endif

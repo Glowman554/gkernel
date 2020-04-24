@@ -9,6 +9,7 @@
 #include "widget.h"
 #include "fs.h"
 #include "initrd.h"
+#include "pci.h"
 
 extern void intr_stub_0(void);
 extern void intr_stub_1(void);
@@ -471,6 +472,9 @@ struct cpu_state* syscall(struct cpu_state* cpu)
 			break;
 		case 18:
 			ls();
+			break;
+		case 19:
+			get_pci_devices();
 			break;
             
     }

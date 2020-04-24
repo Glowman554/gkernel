@@ -33,6 +33,7 @@ void _start(void)
 		}
 		
 		if(strcmp(in, "ls")==0) ls();
+		if(strcmp(in, "lspci")==0) lspci();
 		if(strcmp(in, "reboot")==0) reboot();
 		if(strcmp(in, "time")==0){
 			pnum(0xf,read_h());
@@ -54,6 +55,8 @@ void _start(void)
     		pstring(0xf, "reboot");
 			pchar(0xf,10); // return
 			pstring(0xf, "ls");
+			pchar(0xf,10); // return
+			pstring(0xf, "lspci");
 			pchar(0xf,10); // return
 			pstring(0xf, "desktop");
 			pchar(0xf,10); // return
