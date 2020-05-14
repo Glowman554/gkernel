@@ -1,4 +1,6 @@
 #include "initrd.h"
+#include "string.h"
+#include "mm.h"
 #include <stdint.h>
 initrd_header_t *initrd_header;     // The header.
 initrd_file_header_t *file_headers; // The list of file headers.
@@ -60,7 +62,8 @@ fs_node_t *initialise_initrd(uint32_t location)
     file_headers = (initrd_file_header_t *) (location+sizeof(initrd_header_t));
 
     // Initialise the root directory.
-    initrd_root = (fs_node_t*)pmm_alloc(sizeof(fs_node_t));
+    //initrd_root = (fs_node_t*)pmm_alloc(sizeof(fs_node_t));
+	initrd_root = (fs_node_t*)pmm_alloc();
     strcpy(initrd_root->name, "initrd");
     initrd_root->mask = initrd_root->uid = initrd_root->gid = initrd_root->inode = initrd_root->length = 0;
     initrd_root->flags = FS_DIRECTORY;
@@ -74,7 +77,8 @@ fs_node_t *initialise_initrd(uint32_t location)
     initrd_root->impl = 0;
 
     // Initialise the /dev directory (required!)
-    initrd_dev = (fs_node_t*)pmm_alloc(sizeof(fs_node_t));
+    //initrd_dev = (fs_node_t*)pmm_alloc(sizeof(fs_node_t));
+	initrd_dev = (fs_node_t*)pmm_alloc();
     strcpy(initrd_dev->name, "dev");
     initrd_dev->mask = initrd_dev->uid = initrd_dev->gid = initrd_dev->inode = initrd_dev->length = 0;
     initrd_dev->flags = FS_DIRECTORY;
@@ -87,7 +91,8 @@ fs_node_t *initialise_initrd(uint32_t location)
     initrd_dev->ptr = 0;
     initrd_dev->impl = 0;
 
-    root_nodes = (fs_node_t*)pmm_alloc(sizeof(fs_node_t) * initrd_header->nfiles);
+    //root_nodes = (fs_node_t*)pmm_alloc(sizeof(fs_node_t) * initrd_header->nfiles);
+	root_nodes = (fs_node_t*)pmm_alloc();
     nroot_nodes = initrd_header->nfiles;
 
     // For every file...

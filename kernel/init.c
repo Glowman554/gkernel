@@ -14,8 +14,9 @@
 #include "gui/desktop.h"
 #include "gui/info_app.h"
 #include "pci.h"
+#include "string.h"
 
-char* version = "v0.2.1";
+char* version = "v0.2.2";
 
 void init(struct multiboot_info *mb_info)
 {

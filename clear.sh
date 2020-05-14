@@ -21,3 +21,5 @@ rm terminal/*.bin
 rm terminal/*.o
 rm writer/*.bin
 rm writer/*.o
+rm init/*.bin
+rm init/*.o

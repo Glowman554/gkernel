@@ -1,0 +1,46 @@
+make -C kernel
+make[1]: Entering directory '/mnt/c/data/glowos/kernel'
+nasm -f aout -o bios.o bios.n
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o console.o console.c
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o driver/cmos/cmos.o driver/cmos/cmos.c
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o driver/keyboard/keyboard.o driver/keyboard/keyboard.c
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o driver/pit/pit.o driver/pit/pit.c
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o driver/vga/vga.o driver/vga/vga.c
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o fs.o fs.c
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o gui/cursor.o gui/cursor.c
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o gui/desktop.o gui/desktop.c
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o gui/files.o gui/files.c
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o gui/info_app.o gui/info_app.c
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o info_line.o info_line.c
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o init.o init.c
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o initrd.o initrd.c
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o intr.o intr.c
+gcc -m32 -c -o int_stub.o int_stub.S
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o io.o io.c
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o mm_phys.o mm_phys.c
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o pci.o pci.c
+gcc -m32 -c -o start.o start.S
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o string.o string.c
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o tasks.o tasks.c
+gcc -m32 -Wall -g -fno-stack-protector -I include -c -o widget.o widget.c
+ld -melf_i386 -Tkernel.ld -o kernel bios.o console.o driver/cmos/cmos.o driver/keyboard/keyboard.o driver/pit/pit.o driver/vga/vga.o fs.o gui/cursor.o gui/desktop.o gui/files.o gui/info_app.o info_line.o init.o initrd.o intr.o int_stub.o io.o mm_phys.o pci.o start.o string.o tasks.o widget.o
+make[1]: Leaving directory '/mnt/c/data/glowos/kernel'
+make -C programs
+make[1]: Entering directory '/mnt/c/data/glowos/programs'
+make -C terminal
+make[2]: Entering directory '/mnt/c/data/glowos/programs/terminal'
+gcc -m32 -Wall -g -fno-stack-protector -nostdinc -I include -c -o syslib.o syslib.c
+gcc -m32 -Wall -g -fno-stack-protector -nostdinc -I include -c -o terminal.o terminal.c
+ld -melf_i386 -Tterminal.ld -o terminal.bin syslib.o terminal.o
+make[2]: Leaving directory '/mnt/c/data/glowos/programs/terminal'
+make -C writer
+make[2]: Entering directory '/mnt/c/data/glowos/programs/writer'
+gcc -m32 -Wall -g -fno-stack-protector -nostdinc -I include -c -o syslib.o syslib.c
+gcc -m32 -Wall -g -fno-stack-protector -nostdinc -I include -c -o writer.o writer.c
+ld -melf_i386 -Twriter.ld -o writer.bin syslib.o writer.o
+make[2]: Leaving directory '/mnt/c/data/glowos/programs/writer'
+make -C init	
+make[2]: Entering directory '/mnt/c/data/glowos/programs/init'
+make[2]: 'init.bin' is up to date.
+make[2]: Leaving directory '/mnt/c/data/glowos/programs/init'
+make[1]: Leaving directory '/mnt/c/data/glowos/programs'

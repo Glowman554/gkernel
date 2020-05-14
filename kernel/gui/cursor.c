@@ -4,6 +4,10 @@
 
 char pixbuf[15];
 
+void loadpixel();
+void savepixel();
+void redraw();
+
 bool reloadp = false;
 
 int x,y = 0;

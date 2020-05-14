@@ -5,6 +5,8 @@ static char* video = (char*) 0xb8000;
 
 int x = 2;
 
+void pstring(char s[]);
+
 void create_error(int code){
 	clrscr();
 	for(int i = 0; i < 80; i++){

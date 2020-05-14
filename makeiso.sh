@@ -10,6 +10,7 @@ cd ..
 cp ./kernel/kernel ./cdrom_files
 cp ./programs/terminal/terminal.bin ./initrd/files
 cp ./programs/writer/writer.bin ./initrd/files
+cp ./programs/init/init.bin ./initrd/files
 
 cd initrd 
 python build.py

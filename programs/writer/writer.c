@@ -5,6 +5,7 @@
 void _start(void)
 {	
 	pstring(0xf, "Press any key  to start writer");
+	//ls();
 	getchar();
 	
 	int x = 0;

@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "string.h"
 #include "mm.h"
+#include "console.h"
 #include "config.h"
 #include "multiboot.h"
 

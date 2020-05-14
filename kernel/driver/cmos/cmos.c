@@ -51,17 +51,18 @@ static uint8_t convert(uint8_t num)
 
 uint8_t read_h(){
 	int h = cmos_read(0x04);
-	convert(h);
+	return convert(h);
+	
 }
 
 uint8_t read_m(){
 	int m = cmos_read(0x02);
-	convert(m);
+	return convert(m);
 }
 
 uint8_t read_s(){
 	int s = cmos_read(0x00);
-	convert(s);
+	return convert(s);
 }
 
 

@@ -2,10 +2,16 @@
 #include "intr.h"
 #include <stdint.h>
 #include "console.h"
+#include "config.h"
 #include "driver/keyboard/keyboard.h"
+#include "driver/vga/vga.h"
+#include "driver/cmos/cmos.h"
 #include "driver/pit/pit.h"
 #include "gui/info_app.h"
 #include "gui/files.h"
+#include "gui/desktop.h"
+#include "string.h"
+#include "gui/cursor.h"
 #include "widget.h"
 #include "fs.h"
 #include "initrd.h"
@@ -392,10 +398,9 @@ struct cpu_state* syscall(struct cpu_state* cpu)
     uint8_t in;
     char inbuff = 0;
     uint8_t good = 0x02;
-	char buf[10000];
+	static char* buf = (char*) 0x1000000;
     
     int h,m,s;
-	uint32_t sz;
 	struct fs_node_t *fsnode = 0;
     
     switch (cpu->eax) {
@@ -454,7 +459,7 @@ struct cpu_state* syscall(struct cpu_state* cpu)
         	break;
         case 14:
         	init_vga();
-			init_desktop("v0.2.1");
+			init_desktop("v0.2.2");
 			init_info_app();
 			init_files_app();
 			break;
@@ -465,8 +470,9 @@ struct cpu_state* syscall(struct cpu_state* cpu)
 			init_task(cursor_manager);
 			break;
 		case 17:
-			fsnode = finddir_fs(fs_root, cpu->ebx);
-			uint32_t sz = read_fs(fsnode, 0, 10000, buf);
+			fsnode = finddir_fs(fs_root, (uint32_t) cpu->ebx);
+			if(DEBUG) kprintf(0xf, "Loading %s\n", cpu->ebx);
+			read_fs(fsnode, 0, 10000, buf);
 			//kprintf(0xa, "%c%c%c%c\n", buf[0], buf[1], buf[2], buf[3]);
 			init_elf((void*) buf);
 			break;

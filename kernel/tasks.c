@@ -12,10 +12,6 @@
 #include "fs.h"
 #include "initrd.h"
 
-struct task {
-	struct cpu_state*   cpu_state;
-	struct task*        next;
-};
 
 static struct task* first_task = NULL;
 static struct task* current_task = NULL;
@@ -153,11 +149,11 @@ void init_multitasking(struct multiboot_info* mb_info) {
 		}
 		*/
 		
-		fs_node_t *fsnode = finddir_fs(fs_root, "terminal.bin");
+		fs_node_t *fsnode = finddir_fs(fs_root, "init.bin");
 		
 		char buf[10000];
 		
-		uint32_t sz = read_fs(fsnode, 0, 10000, buf);
+		read_fs(fsnode, 0, 10000, buf);
 		
 		//kprintf(0xa, "%c%c%c%c\n", buf[0], buf[1], buf[2], buf[3]);
 		init_elf((void*) buf);

@@ -1,4 +1,4 @@
-all: terminal writer
+all: terminal writer init
 
 terminal:
 	$(MAKE) -C terminal
@@ -6,7 +6,9 @@ terminal:
 writer:
 	$(MAKE) -C writer
 	
+init:
+	$(MAKE) -C init	
 
 
-.PHONY: all terminal writer
+.PHONY: all terminal writer init
 
