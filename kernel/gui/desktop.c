@@ -30,7 +30,7 @@ void init_desktop()
 	}
 	
 	int x;
-	char s[] = "GlowOS";
+	char s[] = "GKernel Embeded Desktop";
 	int len = strlen(s);
 	for(int i = 0; i < len; i++)
 	{
