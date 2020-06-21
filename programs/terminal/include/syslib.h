@@ -18,4 +18,5 @@ void ls();
 void lspci();
 void exec(char p[]);
 int strcmp(char *str1, char *str2);
+int kversion();
 #endif

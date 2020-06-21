@@ -118,15 +118,15 @@ void init_multitasking(struct multiboot_info* mb_info) {
 	
 	if (mb_info->mbs_mods_count == 0) {
 		kprintf(0x4,"No multiboot modules\n");
+		kprintf(0xf, "Cant load init.bin without initrd\n");
 	}
 	//init_task(cursor_manager);
 
 	if (mb_info->mbs_mods_count != 0) {
 		struct multiboot_module* modules = mb_info->mbs_mods_addr;
 		
-		
+		kprintf(0xf, "Loading %s as initrd\n", modules[0].cmdline);
 		fs_root = initialise_initrd((void*) modules[0].mod_start);
-		
 		/*
 		int i = 0;
 		struct dirent *node = 0;
@@ -148,7 +148,7 @@ void init_multitasking(struct multiboot_info* mb_info) {
 			i++;
 		}
 		*/
-		
+		kprintf(0xf, "Loading init.bin from initrd\n");
 		fs_node_t *fsnode = finddir_fs(fs_root, "init.bin");
 		
 		char buf[10000];

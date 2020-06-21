@@ -60,6 +60,8 @@ void _start(void)
 			pchar(0xf,10); // return
 			pstring(0xf, "desktop");
 			pchar(0xf,10); // return
+			pstring(0xf, "uname");
+			pchar(0xf,10); // return
 		}
 		if(strcmp(in, "about")==0){
 			pstring(0xf, "Programiert von glowman434");
@@ -72,6 +74,13 @@ void _start(void)
 			asm("int $0x30" : : "a" (16));
 			while(1);
 		}
+
+		if(strcmp(in, "uname")==0){
+			pstring(0xf, "Kernel Reports version ");
+			pnum(0xf, kversion());
+			pchar(0xf, 10);
+		}
+
 		if(in[len-1] == 'n' && in[len-2] == 'i' && in[len-3] == 'b' && in[len-4] == '.'){
   			exec(in);
 			while(1);

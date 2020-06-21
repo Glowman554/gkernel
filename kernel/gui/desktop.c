@@ -3,7 +3,7 @@
 #include "../driver/vga/vga.h"
 
 
-void init_desktop(char* ver)
+void init_desktop()
 {
 	for(int x = 0; x < 320; x++){
 		for(int y = 0; y < 200; y++){
@@ -30,17 +30,12 @@ void init_desktop(char* ver)
 	}
 	
 	int x;
-	char s[] = "GlowOS  ";
+	char s[] = "GlowOS";
 	int len = strlen(s);
 	for(int i = 0; i < len; i++)
 	{
 		draw_char(s[i], 1+(i*8), 1, 15, 8);	
 		x = 1+(i*8);
-	}
-	len = strlen(ver);
-	for(int i = 0; i < len; i++)
-	{
-		draw_char(ver[i], 1+x+(i*8), 1, 15, 8);	
 	}
 }
 

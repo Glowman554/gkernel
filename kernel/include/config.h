@@ -2,7 +2,6 @@
 #define CONFIG_H
 #include "stdbool.h"
 
-
-#define DEBUG false
+#define VERSION 25
 
 #endif

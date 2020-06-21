@@ -98,3 +98,9 @@ int strcmp(char *str1, char *str2)
 void lspci(){
 	asm("int $0x30" : : "a" (19));
 }
+
+int kversion(){
+	register uint32_t input asm("ebx");
+	asm("int $0x30" : : "a" (20));
+	return input;
+}

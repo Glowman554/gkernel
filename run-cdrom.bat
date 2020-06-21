@@ -1,1 +1,1 @@
-emulator\qemu-system-i386 -cdrom cdrom.iso
+qemu-system-i386 -cdrom cdrom.iso

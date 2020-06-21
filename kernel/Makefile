@@ -18,7 +18,7 @@ kernel: $(OBJS)
 	$(CC) $(ASFLAGS) -c -o $@ $^
 
 %.o: %.n
-	nasm -f aout -o $@ $^
+	nasm -f elf32 -o $@ $^
 
 clean:
 	rm $(OBJS)

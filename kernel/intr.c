@@ -140,7 +140,7 @@ char scancode_kbd[256][2] =
     {0,               0},      // 0x4B l
     {0,               0},      // 0x4C TODO
     {0,               0},      // 0x4D p
-    {0,               0},      // 0x4E Ã?
+    {0,               0},      // 0x4E ï¿½?
     {0,               0},         // 0x4F
     {0,               0},         // 0x50
     {0,               0},         // 0x51
@@ -459,7 +459,7 @@ struct cpu_state* syscall(struct cpu_state* cpu)
         	break;
         case 14:
         	init_vga();
-			init_desktop("v0.2.2");
+			init_desktop();
 			init_info_app();
 			init_files_app();
 			break;
@@ -471,7 +471,7 @@ struct cpu_state* syscall(struct cpu_state* cpu)
 			break;
 		case 17:
 			fsnode = finddir_fs(fs_root, (uint32_t) cpu->ebx);
-			if(DEBUG) kprintf(0xf, "Loading %s\n", cpu->ebx);
+			kprintf(0xf, "Loading %s from initrd\n", cpu->ebx);
 			read_fs(fsnode, 0, 10000, buf);
 			//kprintf(0xa, "%c%c%c%c\n", buf[0], buf[1], buf[2], buf[3]);
 			init_elf((void*) buf);
@@ -482,7 +482,9 @@ struct cpu_state* syscall(struct cpu_state* cpu)
 		case 19:
 			get_pci_devices();
 			break;
-            
+        case 20:
+            cpu->ebx = VERSION;
+            break;
     }
 
     return cpu;
