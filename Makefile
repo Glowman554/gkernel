@@ -1,4 +1,4 @@
-all: kernel programs iso
+all: kernel programs
 
 kernel:
 	$(MAKE) -C kernel
