@@ -90,7 +90,6 @@ void* pmm_alloc(void)
             for (j = 0; j < 32; j++) {
                 if (bitmap[i] & (1 << j)) {
                     bitmap[i] &= ~(1 << j);
-					if(DEBUG) kprintf(0xa, "pmm_alloc: 0x%x\n", (i * 32 + j) * 4096);
                     return (void*)( (i * 32 + j) * 4096);
                 }
             }
