@@ -1,4 +1,0 @@
-title glowos
-kernel /kernel
-module /initrd.img
-boot
