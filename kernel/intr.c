@@ -7,11 +7,7 @@
 #include "driver/vga/vga.h"
 #include "driver/cmos/cmos.h"
 #include "driver/pit/pit.h"
-#include "gui/info_app.h"
-#include "gui/files.h"
-#include "gui/desktop.h"
 #include "string.h"
-#include "gui/cursor.h"
 #include "widget.h"
 #include "fs.h"
 #include "initrd.h"
@@ -350,25 +346,6 @@ void init_intr(void)
     asm volatile("sti");
 }
 
-static void cursor_manager(void) {
-	char in;
-	while(1) {
-		reset_tick();
-		while(get_tick() < 5);
-		in = getchar();
-		switch(in) {
-			case ' ':
-				if(getcx() > 5 && getcx() < 25 && getcy() > 20 && getcy() < 40) {
-					asm("int $0x30" : : "a" (13));
-				}
-				if(getcx() > 5 && getcx() < 25 && getcy() > 45 && getcy() < 65) {
-					asm("int $0x30" : : "a" (15));
-				}
-				break;
-		}
-	}
-}
-
 void ls()
 {
 	int i = 0;
@@ -404,10 +381,10 @@ struct cpu_state* syscall(struct cpu_state* cpu)
 	struct fs_node_t *fsnode = 0;
     
     switch (cpu->eax) {
-        case 0: /* putc */
+        case PUTC:
             kprintf(cpu->ecx, "%c", cpu->ebx);
             break;
-        case 1:	//getchar
+        case GETCHAR:
 	       	while(inbuff == 0){
 	       		in = inb(0x60);
 				inbuff = scancode_kbd[in][0];
@@ -415,74 +392,62 @@ struct cpu_state* syscall(struct cpu_state* cpu)
 			//kprintf("%c", scancode_kbd[in][0]);
 			cpu->ebx = scancode_kbd[in][0];
 			break;
-		case 2: //reboot
+		case REBOOT:
 		    while (good & 0x02)
 		        good = inb(0x64);
 		    outb(0x64, 0xFE);
 		    asm volatile ("hlt");
 		    break;
-		case 3:
+		case PNUM:
             kprintf(cpu->ecx, "%d", cpu->ebx);
             break;
-        case 4:
+        case READ_H:
         	h = read_h();
         	cpu->ebx = h;
         	break;
-        case 5:
+        case READ_M:
         	m = read_m();
         	cpu->ebx = m;
         	break;
-        case 6:
+        case READ_S:
         	s = read_s();
         	cpu->ebx = s;
         	break;
-        case 7:
+        case RTICK:
         	reset_tick();
         	break;
-        case 8:
+        case GTICK:
         	cpu->ebx = get_tick();
         	break;
-        case 9:
-        	create_error(1);
-        	break;
-        case 10:
+        case CLRSCR:
         	clrscr();
         	break;
-        case 11:
+        case SETX:
         	setx(cpu->ebx);
         	break;
-        case 12:
+        case SETY:
         	sety(cpu->ebx);
         	break;
-        case 13:
-			info_app_main();
-        	break;
-        case 14:
+        case SVGA:
         	init_vga();
-			init_desktop();
-			init_info_app();
-			init_files_app();
 			break;
-		case 15:
-			files_app_main();
+		case SPIXEL:
+			setpixel(cpu->ebx, cpu->ecx, cpu->edx);
 			break;
-		case 16:
-			init_task(cursor_manager);
-			break;
-		case 17:
+		case LOADF:
 			fsnode = finddir_fs(fs_root, (uint32_t) cpu->ebx);
 			kprintf(0xf, "Loading %s from initrd\n", cpu->ebx);
 			read_fs(fsnode, 0, 10000, buf);
 			//kprintf(0xa, "%c%c%c%c\n", buf[0], buf[1], buf[2], buf[3]);
 			init_elf((void*) buf);
 			break;
-		case 18:
+		case LS:
 			ls();
 			break;
-		case 19:
+		case LSPCI:
 			get_pci_devices();
 			break;
-        case 20:
+        case KVER:
             cpu->ebx = VERSION;
             break;
     }

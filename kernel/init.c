@@ -11,8 +11,6 @@
 #include "initrd.h"
 #include "config.h"
 #include "bios.h"
-#include "gui/desktop.h"
-#include "gui/info_app.h"
 #include "pci.h"
 #include "string.h"
 

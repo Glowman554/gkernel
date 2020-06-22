@@ -2,7 +2,6 @@
 #include "pit.h"
 #include "io.h"
 #include "info_line.h"
-#include "../../gui/desktop.h"
 #include "console.h"
 
 uint32_t tick = 0;

@@ -1,6 +1,5 @@
 #include "vga.h"
 #include "bios.h"
-#include "fonts.h"
 #include <stdint.h>
 
 #define NULL ((void*) 0)
@@ -38,16 +37,4 @@ char getpixel(int x, int y) {
 	
 	return 0;
 	
-}
-
-volatile void draw_char(char c, int x, int y, uint32_t fgcolor, uint32_t bgcolor) {
-	int cx,cy;
-	int mask[8]={1,2,4,8,16,32,64,128};
-	const char *glyph=LSB[((int)c)];
-		
-	for(cy=0;cy<14;cy++){
-		for(cx=0;cx<8;cx++){
-			setpixel(cx+x,cy+y,glyph[cy]&mask[cx]?fgcolor:bgcolor);
-		}
-	}
 }
