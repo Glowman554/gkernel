@@ -373,6 +373,7 @@ struct cpu_state* syscall(struct cpu_state* cpu)
      * Registern werden die Parameter uebergeben.
      */
     uint8_t in;
+	uint8_t ret;
     char inbuff = 0;
     uint8_t good = 0x02;
 	static char* buf = (char*) 0x1000000;
@@ -389,8 +390,20 @@ struct cpu_state* syscall(struct cpu_state* cpu)
 	       		in = inb(0x60);
 				inbuff = scancode_kbd[in][0];
 			}
-			//kprintf("%c", scancode_kbd[in][0]);
+			//mouse right -> 77
+			//mouse left -> 75
+			//mouse up -> 72
+			//mouse down -> 80
+			
+			//cpu->ebx = in;
 			cpu->ebx = scancode_kbd[in][0];
+			
+			//kprintf(0xa, "%d\n", in);
+			
+			break;
+		case GETMOV:
+			in = inb(0x60);
+			cpu->ebx = in;
 			break;
 		case REBOOT:
 		    while (good & 0x02)

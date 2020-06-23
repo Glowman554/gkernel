@@ -2,7 +2,7 @@
 #define CONFIG_H
 #include "stdbool.h"
 
-#define VERSION 26
+#define VERSION 27
 
 //syscalls
 
@@ -15,6 +15,7 @@
 #define READ_S	6
 #define RTICK	7
 #define GTICK	8
+#define GETMOV	9
 #define CLRSCR	10
 #define SETX 	11
 #define SETY 	12
