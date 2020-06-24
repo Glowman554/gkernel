@@ -380,6 +380,8 @@ struct cpu_state* syscall(struct cpu_state* cpu)
     
     int h,m,s;
 	struct fs_node_t *fsnode = 0;
+	
+	//kprintf(0xa, "Syscall eax %d, ebx %d, ecx %d, edx %d\n", cpu->eax, cpu->ebx ,cpu->ecx, cpu->edx);
     
     switch (cpu->eax) {
         case PUTC:
@@ -443,6 +445,9 @@ struct cpu_state* syscall(struct cpu_state* cpu)
         	break;
         case SVGA:
         	init_vga();
+			break;
+		case GPIXEL:
+			cpu->edx = getpixel(cpu->ebx, cpu->ecx);
 			break;
 		case SPIXEL:
 			setpixel(cpu->ebx, cpu->ecx, cpu->edx);

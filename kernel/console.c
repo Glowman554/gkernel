@@ -1,8 +1,10 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include "console.h"
+#include "serial.h"
 
 bool scrole = true;
+bool serial = false;
 
 static int x = 0;
 static int y = 0;
@@ -31,7 +33,9 @@ static void kputc(char c)
     // Die folgende Zeile reinnehmen fuer Ausgabe auf der seriellen
     // Schnittstelle (nur Emulatoren; reale Hardware braucht mehr)
     // outb(0x3f8, c);
-
+	
+	if(serial) write_serial(c);
+	
     if (c == '\n') {
         return;
     }
@@ -119,6 +123,7 @@ int kprintf(char c, const char* fmt, ...)
 	color = c;
     va_start(ap, fmt);
     kprintf_res = 0;
+	serial = true;
     while (*fmt) {
         if (*fmt == '%') {
             fmt++;
@@ -160,6 +165,6 @@ int kprintf(char c, const char* fmt, ...)
 
 out:
     va_end(ap);
-
+	serial = false;
     return kprintf_res;
 }

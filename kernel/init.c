@@ -13,9 +13,11 @@
 #include "bios.h"
 #include "pci.h"
 #include "string.h"
+#include "serial.h"
 
 void init(struct multiboot_info *mb_info)
 {
+	init_serial();
     clrscr();
     kprintf(0xa, "GKernel %d Loading...\n", VERSION);
 	kprintf(0xf, "Reporting kernel version %d\n", VERSION);

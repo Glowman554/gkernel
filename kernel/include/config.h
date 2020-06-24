@@ -2,7 +2,7 @@
 #define CONFIG_H
 #include "stdbool.h"
 
-#define VERSION 28
+#define VERSION 30
 
 //syscalls
 
@@ -19,6 +19,7 @@
 #define CLRSCR	10
 #define SETX 	11
 #define SETY 	12
+#define GPIXEL	13
 #define SVGA	14
 #define SPIXEL	15
 #define LOADF	17
