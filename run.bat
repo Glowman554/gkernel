@@ -1,1 +1,1 @@
-qemu-system-i386 -kernel kernel/kernel -serial stdio
+qemu-system-i386 -kernel kernel/kernel
