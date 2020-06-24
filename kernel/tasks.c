@@ -18,6 +18,8 @@ static struct task* current_task = NULL;
 
 struct task* init_task(void* entry);
 
+int nextpid = 1;
+
 /*
  * Jeder Task braucht seinen eigenen Stack, auf dem er beliebig arbeiten kann,
  * ohne dass ihm andere Tasks Dinge ueberschreiben. Ausserdem braucht ein Task
@@ -67,6 +69,10 @@ struct task* init_task(void* entry) {
 	struct task* task = pmm_alloc();
 	task->cpu_state = state;
 	task->next = first_task;
+	task->pid = nextpid;
+	nextpid++;
+	kprintf(0xf, "Starting Task with pid %d\n", task->pid);
+	
 	first_task = task;
 	return task;
 }

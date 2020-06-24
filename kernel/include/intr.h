@@ -28,6 +28,7 @@ struct cpu_state {
 struct task {
 	struct cpu_state*   cpu_state;
 	struct task*        next;
+	int pid;
 };
 
 void init_gdt(void);
