@@ -34,6 +34,7 @@ void init(struct multiboot_info *mb_info)
     init_keyboard();
 	kprintf(0xf, "Calling init_pit()\n");
     init_pit(5);
+	//asm volatile("int $0x1");
 	kprintf(0xf, "Init multitasking\n");
 	init_multitasking(mb_info);
 }	

@@ -478,14 +478,88 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
     struct cpu_state* new_cpu = cpu;
 	//kprintf(0x4, "Interupt %d!\n", cpu->intr);
     if (cpu->intr <= 0x1f) {
-        create_error(cpu->intr);
-		//kprintf(0x4, "Exception %d ", cpu->intr);
+        //create_error(cpu->intr);
+		clrscr();
+		kprintf(0x4, "Exception %d ", cpu->intr);
+		switch(cpu->intr){
+			case 0x0:
+				kprintf(0x4, "Divide by Zero");
+				break;
+			case 0x1:
+				kprintf(0x4, "Debug");
+				break;
+			case 0x2:
+				kprintf(0x4, "Non Maskable Interrupt");
+				break;
+			case 0x3:
+				kprintf(0x4, "Breakpoint");
+				break;
+			case 0x4:
+				kprintf(0x4, "Overflow");
+				break;
+			case 0x5:
+				kprintf(0x4, "Bound Range");
+				break;
+			case 0x6:
+				kprintf(0x4, "Invalid Opcode");
+				break;
+			case 0x7:
+				kprintf(0x4, "Device Not Available");
+				break;
+			case 0x8:
+				kprintf(0x4, "Double Fault");
+				break;
+			case 0x9:
+				kprintf(0x4, "Coprocessor Segment Overrun");
+				break;
+			case 0xa:
+				kprintf(0x4, "Invalid TSS");
+				break;
+			case 0xb:
+				kprintf(0x4, "Segment not Present");
+				break;
+			case 0xc:
+				kprintf(0x4, "Stack Fault");
+				break;
+			case 0xd:
+				kprintf(0x4, "General Protection");
+				break;
+			case 0xe:
+				kprintf(0x4, "Page Fault");
+				break;
+			case 0x10:
+				kprintf(0x4, "x87 Floating Point");
+				break;
+			case 0x11:
+				kprintf(0x4, "Alignment Check");
+				break;
+			case 0x12:
+				kprintf(0x4, "Machine Check");
+				break;
+			case 0x13:
+				kprintf(0x4, "SIMD Floating Point");
+				break;
+			case 0x1e:
+				kprintf(0x4, "Security-sensitive event in Host");
+				break;
+			default:
+				kprintf(0x4, "Reserved");
+				break;
+		}
+		kprintf(0xf, "\n");
+		kprintf(0x4, "Kernel Version %d\n", VERSION);
         // TODO Hier den CPU-Zustand ausgeben
+		
+		kprintf(0x4, "eax: %d, ebx: %d, ecx: %d, edx: %d\n", cpu->eax, cpu->ebx, cpu->ecx, cpu->edx);
+		kprintf(0x4, "esi: %d, edi: %d, ebp: %d\n", cpu->esi, cpu->edi, cpu->ebp);
+		kprintf(0x4, "intr: %d, error: %d\n", cpu->intr, cpu->error);
+		kprintf(0x4, "eip: %d, cs %d, eflags: %d\n", cpu->eip, cpu->cs, cpu->eflags);
+		kprintf(0x4, "esp: %d, ss: %d\n", cpu->esp, cpu->ss);
 
-	        while(1) {
-	            // Prozessor anhalten
-	            asm volatile("cli; hlt");
-	        }
+	    while(1) {
+	        // Prozessor anhalten
+	        asm volatile("cli; hlt");
+	    }
     } else if (cpu->intr >= 0x20 && cpu->intr <= 0x2f) {
 
         if (cpu->intr == 0x20) {

@@ -2,7 +2,7 @@
 #define CONFIG_H
 #include "stdbool.h"
 
-#define VERSION 30
+#define VERSION 31
 
 //syscalls
 
