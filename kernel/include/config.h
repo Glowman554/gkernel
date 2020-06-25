@@ -2,7 +2,7 @@
 #define CONFIG_H
 #include "stdbool.h"
 
-#define VERSION 31
+#define VERSION 32
 
 //syscalls
 
@@ -26,5 +26,6 @@
 #define LS		18
 #define LSPCI	19
 #define KVER	20
+#define EXIT 	21
 
 #endif

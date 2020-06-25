@@ -15,6 +15,7 @@
 #include "string.h"
 #include "serial.h"
 
+
 void init(struct multiboot_info *mb_info)
 {
 	init_serial();
@@ -28,8 +29,6 @@ void init(struct multiboot_info *mb_info)
     init_gdt();
     kprintf(0xf, "Init interupts\n");
     init_intr();
-    
-    //asm volatile("int $0x1");
 	kprintf(0xf, "Calling init_keyboard()\n");
     init_keyboard();
 	kprintf(0xf, "Calling init_pit()\n");

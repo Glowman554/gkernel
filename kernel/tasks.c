@@ -20,6 +20,22 @@ struct task* init_task(void* entry);
 
 int nextpid = 1;
 
+void exit(int code){
+	kprintf(0xf, "[%d] Exit with error code %d\n", current_task->pid, code);
+	struct task* temp = first_task;
+	if(current_task->pid == first_task->pid){ 
+		first_task = temp->next;
+		return;
+	}
+	while(temp->next != NULL){
+		if(temp->next->pid == current_task->pid){
+			temp->next = temp->next->next;
+			current_task = temp->next;
+		}
+		temp = temp->next;
+	}
+}
+
 /*
  * Jeder Task braucht seinen eigenen Stack, auf dem er beliebig arbeiten kann,
  * ohne dass ihm andere Tasks Dinge ueberschreiben. Ausserdem braucht ein Task
