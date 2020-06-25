@@ -20,7 +20,7 @@ struct task* init_task(void* entry);
 
 int nextpid = 1;
 
-void exit(int code){
+void kexit(int code){
 	kprintf(0xf, "[%d] Exit with error code %d\n", current_task->pid, code);
 	struct task* temp = first_task;
 	if(current_task->pid == first_task->pid){ 

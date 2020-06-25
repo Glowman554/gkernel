@@ -469,7 +469,7 @@ struct cpu_state* syscall(struct cpu_state* cpu)
             cpu->ebx = VERSION;
             break;
 		case 21:
-			exit(cpu->ebx);
+			kexit(cpu->ebx);
 			break;
     }
 

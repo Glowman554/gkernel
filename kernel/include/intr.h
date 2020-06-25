@@ -39,5 +39,5 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu);
 struct cpu_state* schedule(struct cpu_state* cpu);
 struct task* init_task(void* entry);
 void init_elf(void* image);
-void exit();
+void kexit(int code);
 #endif
