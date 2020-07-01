@@ -15,6 +15,22 @@
 #include "string.h"
 #include "serial.h"
 
+void task_a(){
+	while(1) kprintf(0xf, "a\n");
+}
+
+void task_b(){
+	while(1) kprintf(0xf, "b\n");
+}
+
+void task_c(){
+	while(1) kprintf(0xf, "c\n");
+}
+
+void task_d(){
+	while(1) kprintf(0xf, "d\n");
+}
+
 
 void init(struct multiboot_info *mb_info)
 {
@@ -36,4 +52,8 @@ void init(struct multiboot_info *mb_info)
 	//asm volatile("int $0x1");
 	kprintf(0xf, "Init multitasking\n");
 	init_multitasking(mb_info);
+	//init_task(task_a);
+	//init_task(task_b);
+	//init_task(task_c);
+	//init_task(task_d);
 }	

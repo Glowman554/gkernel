@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "pit.h"
+#include "intr.h"
 #include "io.h"
 #include "info_line.h"
 #include "console.h"
@@ -22,7 +23,7 @@ void pit_irq_handler(uint8_t irq)
 {
 	tick++;
 	//kprintf(0xa, "Tick %d\n", tick);
-	drawinfo(tick);
+	drawinfo(getproccount());
 	if(tick > 1000000) tick = 0;
 }
 

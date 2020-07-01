@@ -40,4 +40,5 @@ struct cpu_state* schedule(struct cpu_state* cpu);
 struct task* init_task(void* entry);
 void init_elf(void* image);
 void kexit(int code);
+int getproccount();
 #endif

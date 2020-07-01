@@ -16,12 +16,16 @@
 static struct task* first_task = NULL;
 static struct task* current_task = NULL;
 
+
+
 struct task* init_task(void* entry);
 
 int nextpid = 1;
+int proccount = 0;
 
 void kexit(int code){
 	kprintf(0xf, "[%d] Exit with error code %d\n", current_task->pid, code);
+	proccount--;
 	struct task* temp = first_task;
 	if(current_task->pid == first_task->pid){ 
 		first_task = temp->next;
@@ -88,6 +92,7 @@ struct task* init_task(void* entry) {
 	task->pid = nextpid;
 	nextpid++;
 	kprintf(0xf, "Starting Task with pid %d\n", task->pid);
+	proccount++;
 	
 	first_task = task;
 	return task;
@@ -231,4 +236,8 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
 	cpu = current_task->cpu_state;
 
 	return cpu;
+}
+
+int getproccount(){
+	return proccount;
 }
