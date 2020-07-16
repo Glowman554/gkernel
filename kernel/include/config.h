@@ -1,6 +1,7 @@
 #ifndef CONFIG_H 
 #define CONFIG_H 
-#define VERSION 34
+#define VERSION 35
+#define VENDOR "Glowman554"
 #define PUTC 0
 #define GETCHAR 1
 #define REBOOT 2
@@ -22,4 +23,5 @@
 #define LSPCI 19
 #define KVER 20
 #define EXIT 21
+#define KVEN 22
 #endif

@@ -16,7 +16,11 @@
 #include "serial.h"
 
 void task_a(){
-	while(1) kprintf(0xf, "a\n");
+	register uint32_t input asm("ebx");
+	asm("int $0x30" : : "a" (KVEN));
+	kprintf(0xf, "%s\n", input);
+	asm("int $0x30" : : "a" (EXIT), "b" (0));
+	while(1);
 }
 
 void task_b(){
@@ -38,6 +42,7 @@ void init(struct multiboot_info *mb_info)
     clrscr();
     kprintf(0xa, "GKernel %d Loading...\n", VERSION);
 	kprintf(0xf, "Reporting kernel version %d\n", VERSION);
+	kprintf(0xf, "Reporting kernel vendor %s\n", VENDOR);
     kprintf(0xf, "Its %d:%d:%d\n\n", read_h(), read_m(), read_s());
 	kprintf(0xf, "Init physical memory\n");
     pmm_init(mb_info);	

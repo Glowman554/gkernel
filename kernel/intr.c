@@ -468,8 +468,11 @@ struct cpu_state* syscall(struct cpu_state* cpu)
         case KVER:
             cpu->ebx = VERSION;
             break;
-		case 21:
+		case EXIT:
 			kexit(cpu->ebx);
+			break;
+		case KVEN:
+			cpu->ebx = &VENDOR;
 			break;
     }
 
