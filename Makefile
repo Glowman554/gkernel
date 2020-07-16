@@ -9,7 +9,6 @@ config:
 push:
 	git add .
 	git commit -m "autopush"
-	git remote add origin https://github.com/Glowman554/gkernel.git
 	git push -u origin master
 
 .PHONY: all kernel config push
