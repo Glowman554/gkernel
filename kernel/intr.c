@@ -12,6 +12,7 @@
 #include "fs.h"
 #include "initrd.h"
 #include "pci.h"
+#include "tasks.h"
 
 extern void intr_stub_0(void);
 extern void intr_stub_1(void);
@@ -474,9 +475,21 @@ struct cpu_state* syscall(struct cpu_state* cpu)
 		case KVEN:
 			cpu->ebx = &VENDOR;
 			break;
+		case RUNK:
+			(*((func_ptr)cpu->ebx))();
+			break;
     }
 
     return cpu;
+}
+
+
+func_ptr interrupt_handlers[256];
+
+void register_interrupt_handler(uint8_t n, func_ptr handler)
+{
+	kprintf(0xf, "Registering interrupt handler %d at 0x%x\n", n, handler);
+	interrupt_handlers[n] = handler;
 }
 
 struct cpu_state* handle_interrupt(struct cpu_state* cpu)
@@ -572,13 +585,19 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
             new_cpu = schedule(cpu);
             tss[1] = (uint32_t) (new_cpu + 1);
         }
-        if(cpu->intr == 32){
+		
+		if (interrupt_handlers[cpu->intr] != 0)
+		{
+			(*(interrupt_handlers[cpu->intr]))();
+		}
+		
+        /*if(cpu->intr == 32){
         	pit_irq_handler(cpu->intr);
 		}
 		if(cpu->intr == 33){ 
             keyboard_irq_handler(cpu->intr);
             //kprintf(0x4, "Interupt %d!\n", cpu->intr);
-		}
+		}*/
         if (cpu->intr >= 0x28) {
             // EOI an Slave-PIC
             outb(0xa0, 0x20);

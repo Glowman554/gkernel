@@ -2,6 +2,7 @@
 #include "keyboard.h"
 #include "console.h"
 #include "io.h"
+#include "intr.h"
 
 
 char buff = 0;
@@ -161,7 +162,6 @@ static void send_command(uint8_t command);
 
 void init_keyboard(void)
 {
-	kprintf(0xf,"Init keyboard  ");
     // Tastaturpuffer leeren
     while (inb(0x64) & 0x1) {
         inb(0x60);
@@ -169,9 +169,7 @@ void init_keyboard(void)
 
     // Tastatur aktivieren
     send_command(0xF4);
-    kprintf(0xf,"[");
-    kprintf(0x2,"OK");
-    kprintf(0xf,"]\n");
+    register_interrupt_handler(33, &keyboard_irq_handler);
 }
 
 /** Befehl an die Tastatur senden */
@@ -188,7 +186,7 @@ char getchar(){
 	return buff;
 }
 
-void keyboard_irq_handler(uint8_t irq) {
+void keyboard_irq_handler() {
     uint8_t scancode;
  
     scancode = inb(0x60);

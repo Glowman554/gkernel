@@ -63,7 +63,7 @@ def show_dialog(options, define_name, define_value):
 
 syscalls = {"PUTC":"0","GETCHAR":"1","REBOOT":"2","PNUM":"3","READ_H":"4","READ_M":"5","READ_S":"6", "RTICK":"7", "GTICK":"8", "GETMOV":"9", \
             "CLRSCR":"10", "SETX":"11", "SETY":"12", "GPIXEL":"13", "SVGA":"14", "SPIXEL":"15", "LOADF":"17", "LS":"18", "LSPCI":"19", \
-            "KVER":"20", "EXIT":"21", "KVEN":"22"}
+            "KVER":"20", "EXIT":"21", "KVEN":"22", "RUNK":"23"}
 
 config = "#ifndef CONFIG_H \n#define CONFIG_H \n"
 

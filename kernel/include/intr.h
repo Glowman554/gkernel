@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include "multiboot.h"
 
+typedef void (*func_ptr)(void);
+
 struct cpu_state {
     // Von Hand gesicherte Register
     uint32_t   eax;
@@ -25,20 +27,9 @@ struct cpu_state {
     uint32_t   ss;
 };
 
-struct task {
-	struct cpu_state*   cpu_state;
-	struct task*        next;
-	int pid;
-};
-
 void init_gdt(void);
 void init_intr(void);
-void init_multitasking(struct multiboot_info* mb_info);
 
 struct cpu_state* handle_interrupt(struct cpu_state* cpu);
-struct cpu_state* schedule(struct cpu_state* cpu);
-struct task* init_task(void* entry);
-void init_elf(void* image);
-void kexit(int code);
-int getproccount();
+void register_interrupt_handler(uint8_t n, func_ptr handler);
 #endif

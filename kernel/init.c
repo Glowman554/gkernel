@@ -14,13 +14,20 @@
 #include "pci.h"
 #include "string.h"
 #include "serial.h"
+#include "tasks.h"
+
+void kernelfunc(){
+	asm volatile("int $0x1");
+}
+
+void test_task(){
+	asm volatile("int $0x30" : : "a" (RUNK), "b" (&kernelfunc));
+	asm volatile("int $0x30" : : "a" (EXIT), "b" (0));
+	while(1);
+}
 
 void task_a(){
-	register uint32_t input asm("ebx");
-	asm("int $0x30" : : "a" (KVEN));
-	kprintf(0xf, "%s\n", input);
-	asm("int $0x30" : : "a" (EXIT), "b" (0));
-	while(1);
+	while(1) kprintf(0xf, "a\n");
 }
 
 void task_b(){
@@ -43,20 +50,24 @@ void init(struct multiboot_info *mb_info)
     kprintf(0xa, "GKernel %d Loading...\n", VERSION);
 	kprintf(0xf, "Reporting kernel version %d\n", VERSION);
 	kprintf(0xf, "Reporting kernel vendor %s\n", VENDOR);
-    kprintf(0xf, "Its %d:%d:%d\n\n", read_h(), read_m(), read_s());
+    kprintf(0xf, "Its %d:%d:%d\n", read_h(), read_m(), read_s());
+	kprintf(0xf, "\nStage 1 fundamentals\n");
 	kprintf(0xf, "Init physical memory\n");
     pmm_init(mb_info);	
 	kprintf(0xf, "Init global descriptor tabel\n");
     init_gdt();
     kprintf(0xf, "Init interupts\n");
     init_intr();
-	kprintf(0xf, "Calling init_keyboard()\n");
+	kprintf(0xf, "\nStage 2 devices\n");
+	kprintf(0xf, "Init keyboard\n");
     init_keyboard();
-	kprintf(0xf, "Calling init_pit()\n");
+	kprintf(0xf, "Init pit\n");
     init_pit(5);
+	kprintf(0xf, "\nStage 3 advanced\n");
 	//asm volatile("int $0x1");
 	kprintf(0xf, "Init multitasking\n");
 	init_multitasking(mb_info);
+	//init_task(test_task);
 	//init_task(task_a);
 	//init_task(task_b);
 	//init_task(task_c);

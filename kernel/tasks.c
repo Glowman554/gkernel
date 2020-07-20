@@ -11,7 +11,7 @@
 #include "widget.h"
 #include "fs.h"
 #include "initrd.h"
-
+#include "tasks.h"
 
 static struct task* first_task = NULL;
 static struct task* current_task = NULL;

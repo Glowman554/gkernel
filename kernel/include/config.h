@@ -1,6 +1,6 @@
 #ifndef CONFIG_H 
 #define CONFIG_H 
-#define VERSION 35
+#define VERSION 36
 #define VENDOR "Glowman554"
 #define PUTC 0
 #define GETCHAR 1
@@ -24,4 +24,5 @@
 #define KVER 20
 #define EXIT 21
 #define KVEN 22
+#define RUNK 23
 #endif
