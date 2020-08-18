@@ -1,6 +1,6 @@
 #ifndef CONFIG_H 
 #define CONFIG_H 
-#define VERSION 36
+#define VERSION 37
 #define VENDOR "Glowman554"
 #define PUTC 0
 #define GETCHAR 1

@@ -12,5 +12,8 @@ push:
 	git commit -m "autopush"
 	git push -u origin master
 
-.PHONY: all kernel config push
+run: kernel
+	qemu-system-i386 -kernel kernel/kernel -serial stdio
+
+.PHONY: all kernel config push run
 

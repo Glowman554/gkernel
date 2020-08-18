@@ -27,9 +27,12 @@ struct cpu_state {
     uint32_t   ss;
 };
 
+struct multiboot_info *pmb_info;
+
 void init_gdt(void);
 void init_intr(void);
 
 struct cpu_state* handle_interrupt(struct cpu_state* cpu);
 void register_interrupt_handler(uint8_t n, func_ptr handler);
+
 #endif

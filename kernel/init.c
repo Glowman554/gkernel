@@ -47,6 +47,7 @@ void init(struct multiboot_info *mb_info)
 {
 	init_serial();
     clrscr();
+	pmb_info = mb_info;
     kprintf(0xa, "GKernel %d Loading...\n", VERSION);
 	kprintf(0xf, "Reporting kernel version %d\n", VERSION);
 	kprintf(0xf, "Reporting kernel vendor %s\n", VENDOR);
@@ -64,6 +65,7 @@ void init(struct multiboot_info *mb_info)
 	kprintf(0xf, "Init pit\n");
     init_pit(5);
 	kprintf(0xf, "\nStage 3 advanced\n");
+
 	//asm volatile("int $0x1");
 	kprintf(0xf, "Init multitasking\n");
 	init_multitasking(mb_info);

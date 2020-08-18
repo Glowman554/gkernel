@@ -145,45 +145,30 @@ void init_multitasking(struct multiboot_info* mb_info) {
 	
 	if (mb_info->mbs_mods_count == 0) {
 		kprintf(0x4,"No multiboot modules\n");
-		kprintf(0xf, "Cant load init.bin without initrd\n");
+		kprintf(0xf, "Cant load /system/init.bin\n");
 	}
 	//init_task(cursor_manager);
+	//clrscr();
+	char buf[] = "                                                               ";
+	if (pmb_info->mbs_mods_count != 0) {
+		for(int i = 0; i < pmb_info->mbs_mods_count; i++){
+			struct multiboot_module* modules = pmb_info->mbs_mods_addr;
+			//init_elf((void*) modules[0].mod_start);
+			strcpy(buf, "                                                               ");
+			strcpy(buf, modules[i].cmdline);
+			buf[strlen(modules[i].cmdline)] = 0x0;
 
-	if (mb_info->mbs_mods_count != 0) {
-		struct multiboot_module* modules = mb_info->mbs_mods_addr;
-		
-		kprintf(0xf, "Loading %s as initrd\n", modules[0].cmdline);
-		fs_root = initialise_initrd((void*) modules[0].mod_start);
-		/*
-		int i = 0;
-		struct dirent *node = 0;
-	
-		kprintf(0x8, "\n");
-	
-		while ( (node = readdir_fs(fs_root, i)) != 0)
-		{
-			int len = strlen(node->name);
-			fs_node_t *fsnode = finddir_fs(fs_root, node->name);
-			
-			if ((fsnode->flags&0x7) == FS_DIRECTORY)
-				kprintf(0x8,"Found Directory ");
-			else
-				kprintf(0x8,"Found File ");
-		
-			for(int i = 0; i < len; i++) kprintf(0x8, "%c", node->name[i]);
-			kprintf(0x8, "\n");
-			i++;
+			//kprintf(0xf, "Found module %s at position %d with len %d\n", buf, i, strlen(modules[i].cmdline));
+
+			//kprintf(0xf, "%s\n", buf);
+
+			if(strcmp(buf, "/system/init.bin")==0){
+				//kprintf(0xf, "Found init.bin\n");
+				init_elf((void*) modules[i].mod_start);
+				return;
+			}
 		}
-		*/
-		kprintf(0xf, "Loading init.bin from initrd\n");
-		fs_node_t *fsnode = finddir_fs(fs_root, "init.bin");
-		
-		char buf[10000];
-		
-		read_fs(fsnode, 0, 10000, buf);
-		
-		//kprintf(0xa, "%c%c%c%c\n", buf[0], buf[1], buf[2], buf[3]);
-		init_elf((void*) buf);
+		kprintf(0xf, "Cant load /system/init.bin\n");
 	}
 
 

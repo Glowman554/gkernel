@@ -71,7 +71,7 @@ char scancode_kbd[256][2] =
     {'8',           '('},         // 0x09
     {'9',           ')'},         // 0x0A F8
     {'0',           '='},         // 0x0B F6
-    {39,            '?'},         // 0x0C'
+    {'/',            '?'},         // 0x0C'
     {'^',           '`'},         // 0x0D
     {'\b',         '\b'},         // 0x0E
     {'\t',         '\t'},         // 0x0F F4
@@ -349,21 +349,13 @@ void init_intr(void)
 
 void ls()
 {
-	int i = 0;
-	struct dirent *node = 0;
-	kprintf(0x8, "");
-	while ( (node = readdir_fs(fs_root, i)) != 0)
-	{
-		int len = strlen(node->name);
-		//kprintf(0x8, "%d\n", len);
-		fs_node_t *fsnode = finddir_fs(fs_root, node->name);
-		
-		if ((fsnode->flags&0x7) == FS_DIRECTORY)
-			for(int i = 0; i < len; i++) kprintf(0xa, "%c", node->name[i]);
-		else
-			for(int i = 0; i < len; i++) kprintf(0xf, "%c", node->name[i]);
-		kprintf(0x8, "\n");
-		i++;
+	if (pmb_info->mbs_mods_count != 0) {
+		struct multiboot_module* modules = pmb_info->mbs_mods_addr;
+		int i;
+
+		for (i = 0; i < pmb_info->mbs_mods_count; i++) {
+			kprintf(0xf, "Found module %s at 0x%x\n", modules[i].cmdline, modules[i].mod_start);
+		}
 	}
 }
 
@@ -373,15 +365,16 @@ struct cpu_state* syscall(struct cpu_state* cpu)
      * Der Aufrufer uebergibt in eax die Nummer des Syscalls. In den weiteren
      * Registern werden die Parameter uebergeben.
      */
-    uint8_t in;
+    uint8_t in, i;
 	uint8_t ret;
     char inbuff = 0;
     uint8_t good = 0x02;
-	static char* buf = (char*) 0x1000000;
     
     int h,m,s;
-	struct fs_node_t *fsnode = 0;
+    struct multiboot_module* modules = pmb_info->mbs_mods_addr;
 	
+    char buf[] = "                                                               ";
+
 	//kprintf(0xa, "Syscall eax %d, ebx %d, ecx %d, edx %d\n", cpu->eax, cpu->ebx ,cpu->ecx, cpu->edx);
     
     switch (cpu->eax) {
@@ -454,11 +447,16 @@ struct cpu_state* syscall(struct cpu_state* cpu)
 			setpixel(cpu->ebx, cpu->ecx, cpu->edx);
 			break;
 		case LOADF:
-			fsnode = finddir_fs(fs_root, (uint32_t) cpu->ebx);
-			kprintf(0xf, "Loading %s from initrd\n", cpu->ebx);
-			read_fs(fsnode, 0, 10000, buf);
-			//kprintf(0xa, "%c%c%c%c\n", buf[0], buf[1], buf[2], buf[3]);
-			init_elf((void*) buf);
+            kprintf(0xf, "Loading file %s\n", cpu->ebx);
+            for(i = 0; i < pmb_info->mbs_mods_count; i++){
+                strcpy(buf, "                                                               ");
+		    	strcpy(buf, modules[i].cmdline);
+	    		buf[strlen(modules[i].cmdline)] = 0x0;
+                //kprintf(0xf, "Found module %s at position %d with len %d\n", buf, i, strlen(modules[i].cmdline));
+                if(strcmp(buf, cpu->ebx)==0){
+		    		init_elf((void*) modules[i].mod_start);
+		    	}
+            }
 			break;
 		case LS:
 			ls();
