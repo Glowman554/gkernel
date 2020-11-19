@@ -1,5 +1,5 @@
-#include "info_line.h"
-#include "console.h"
+#include <info_line.h>
+#include <console.h>
 
 static char* video = (char*) 0xb8000;
 

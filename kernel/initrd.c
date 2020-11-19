@@ -1,6 +1,6 @@
-#include "initrd.h"
-#include "string.h"
-#include "mm.h"
+#include <initrd.h>
+#include <string.h>
+#include <mm.h>
 #include <stdint.h>
 initrd_header_t *initrd_header;     // The header.
 initrd_file_header_t *file_headers; // The list of file headers.

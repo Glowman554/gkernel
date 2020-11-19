@@ -1,20 +1,20 @@
-#include "console.h"
-#include "intr.h"
-#include "mm.h"
-#include "multiboot.h"
+#include <console.h>
+#include <intr.h>
+#include <mm.h>
+#include <multiboot.h>
 #include "driver/keyboard/keyboard.h"
 #include "driver/cmos/cmos.h"
 #include "driver/pit/pit.h"
 #include "driver/vga/vga.h"
-#include "widget.h"
-#include "fs.h"
-#include "initrd.h"
-#include "config.h"
-#include "bios.h"
-#include "pci.h"
-#include "string.h"
-#include "serial.h"
-#include "tasks.h"
+#include <widget.h>
+#include <fs.h>
+#include <initrd.h>
+#include <config.h>
+#include <bios.h>
+#include <pci.h>
+#include <string.h>
+#include <serial.h>
+#include <tasks.h>
 
 void kernelfunc(){
 	asm volatile("int $0x1");

@@ -1,17 +1,17 @@
 #include <stddef.h>
 #include <stdbool.h>
-#include "string.h"
+#include <string.h>
 
-#include "console.h"
-#include "intr.h"
-#include "mm.h"
-#include "multiboot.h"
-#include "elf.h"
+#include <console.h>
+#include <intr.h>
+#include <mm.h>
+#include <multiboot.h>
+#include <elf.h>
 #include "driver/keyboard/keyboard.h"
-#include "widget.h"
-#include "fs.h"
-#include "initrd.h"
-#include "tasks.h"
+#include <widget.h>
+#include <fs.h>
+#include <initrd.h>
+#include <tasks.h>
 
 static struct task* first_task = NULL;
 static struct task* current_task = NULL;

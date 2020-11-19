@@ -1,6 +1,6 @@
 all: kernel
 
-kernel: config
+kernel:
 	$(MAKE) -C kernel
 
 config:
@@ -12,8 +12,8 @@ push:
 	git commit -m "autopush"
 	git push -u origin master
 
-run: kernel
-	qemu-system-i386 -kernel kernel/kernel -serial stdio
+run: kernel	
+	qemu-system-i386.exe -kernel kernel/kernel
 
 .PHONY: all kernel config push run
 

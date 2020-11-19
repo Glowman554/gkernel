@@ -1,6 +1,6 @@
-#include "console.h"	
-#include "pci.h"
-#include "io.h"
+#include <console.h>	
+#include <pci.h>
+#include <io.h>
 #include <stdint.h> 
 
 #define PCI_CONFIG_DATA    0x0CFC

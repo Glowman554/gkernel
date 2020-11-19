@@ -9,16 +9,20 @@ CFLAGS = -m32 -Wall -g -fno-stack-protector -I include -Wno-incompatible-pointer
 LDFLAGS = -melf_i386 -Tkernel.ld
 
 kernel: $(OBJS)
-	$(LD) $(LDFLAGS) -o $@ $^
+	@echo LD $^
+	@$(LD) $(LDFLAGS) -o $@ $^
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $^
+	@echo CC $^
+	@$(CC) $(CFLAGS) -c -o $@ $^
 
 %.o: %.S
-	$(CC) $(ASFLAGS) -c -o $@ $^
+	@echo AS $^
+	@$(CC) $(ASFLAGS) -c -o $@ $^
 
 %.o: %.n
-	nasm -f elf32 -o $@ $^
+	@echo NASM $^
+	@nasm -f elf32 -o $@ $^
 
 clean:
 	rm $(OBJS)

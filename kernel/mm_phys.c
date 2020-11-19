@@ -1,9 +1,9 @@
 #include <stdint.h>
-#include "string.h"
-#include "mm.h"
-#include "console.h"
-#include "config.h"
-#include "multiboot.h"
+#include <string.h>
+#include <mm.h>
+#include <console.h>
+#include <config.h>
+#include <multiboot.h>
 
 /*
  * Der Einfachheit halber deklarieren wir die maximal benoetige Bitmapgroesse

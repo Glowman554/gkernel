@@ -1,18 +1,18 @@
 #include <stdint.h>
-#include "intr.h"
+#include <intr.h>
 #include <stdint.h>
-#include "console.h"
-#include "config.h"
+#include <console.h>
+#include <config.h>
 #include "driver/keyboard/keyboard.h"
 #include "driver/vga/vga.h"
 #include "driver/cmos/cmos.h"
 #include "driver/pit/pit.h"
-#include "string.h"
-#include "widget.h"
-#include "fs.h"
-#include "initrd.h"
-#include "pci.h"
-#include "tasks.h"
+#include <string.h>
+#include <widget.h>
+#include <fs.h>
+#include <initrd.h>
+#include <pci.h>
+#include <tasks.h>
 
 extern void intr_stub_0(void);
 extern void intr_stub_1(void);

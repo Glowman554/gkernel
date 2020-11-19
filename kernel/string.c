@@ -1,6 +1,6 @@
 #include <stddef.h>
 #include <stdint.h>
-#include "string.h"
+#include <string.h>
 
 // Copy len bytes from src to dest.
 void* memset(void* buf, int c, int n)

@@ -1,7 +1,7 @@
 #include <stdarg.h>
 #include <stdbool.h>
-#include "console.h"
-#include "serial.h"
+#include <console.h>
+#include <serial.h>
 
 bool scrole = true;
 bool serial = false;
@@ -37,6 +37,7 @@ static void kputc(char c)
 	if(serial) write_serial(c);
 	
     if (c == '\n') {
+		if(serial) write_serial('\r');
         return;
     }
 

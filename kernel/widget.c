@@ -1,5 +1,5 @@
-#include "widget.h"
-#include "console.h"
+#include <widget.h>
+#include <console.h>
 
 static char* video = (char*) 0xb8000;
 
